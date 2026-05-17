@@ -1,0 +1,117 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with basic info",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Workspace": {
+      "title": "Workspace",
+      "description": "A workspace container for folders and projects",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "icon": { "type": "string" },
+        "gradient": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "ownerId"]
+    },
+    "Folder": {
+      "title": "Folder",
+      "description": "A folder or project inside a workspace",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "workspaceId": { "type": "string" },
+        "name": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "icon": { "type": "string" },
+        "color": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "workspaceId", "name", "ownerId"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "A productivity task unit",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "folderId": { "type": "string" },
+        "workspaceId": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "aiSummary": { "type": "string" },
+        "status": { "type": "string", "enum": ["todo", "in-progress", "completed", "archived"] },
+        "priority": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+        "dueDate": { "type": "string", "format": "date-time" },
+        "progress": { "type": "number" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "subtasks": { 
+          "type": "array", 
+          "items": { 
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "completed": { "type": "boolean" }
+            }
+          }
+        },
+        "aiExecutionPlan": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "isDeleted": { "type": "boolean" }
+      },
+      "required": ["id", "title", "ownerId", "status"]
+    },
+    "ActivityLog": {
+      "title": "ActivityLog",
+      "description": "Tracks all activities for history",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "action": { "type": "string" },
+        "targetId": { "type": "string" },
+        "targetType": { "type": "string" },
+        "details": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "action"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/workspaces/{workspaceId}": {
+      "schema": "Workspace",
+      "description": "Workspaces"
+    },
+    "/workspaces/{workspaceId}/folders/{folderId}": {
+      "schema": "Folder",
+      "description": "Folders/Projects within a workspace"
+    },
+    "/workspaces/{workspaceId}/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Tasks associated with a workspace"
+    },
+    "/users/{userId}/activity_logs/{logId}": {
+      "schema": "ActivityLog",
+      "description": "User activity logs"
+    }
+  }
+}

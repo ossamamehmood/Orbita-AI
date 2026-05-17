@@ -1,0 +1,8 @@
+{
+  "name": "Orbita AI",
+  "description": "Orbita AI — tasks in motion. A high-end, futuristic productivity ecosystem featuring neural-link task management and a polished immersive interface.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

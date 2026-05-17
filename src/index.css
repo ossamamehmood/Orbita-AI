@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2.5rem;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --animate-bounce-subtle: bounce-subtle 2s infinite ease-in-out;
+
+  @keyframes bounce-subtle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+}
+
+:root {
+  --background: #020205;
+  --foreground: #ffffff;
+  
+  --primary: #02FEDC;
+  --primary-foreground: #000000;
+  
+  --secondary: #5A5CFF;
+  --secondary-foreground: #ffffff;
+  
+  --accent: #F502FD;
+  --accent-foreground: #ffffff;
+  
+  --muted: rgba(255, 255, 255, 0.05);
+  --muted-foreground: rgba(255, 255, 255, 0.4);
+  
+  --card: rgba(255, 255, 255, 0.02);
+  --card-foreground: #ffffff;
+  
+  --popover: #020205;
+  --popover-foreground: #ffffff;
+  
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.05);
+  --ring: #02FEDC;
+  
+  --radius: 1.5rem;
+}
+
+body {
+  background-color: #000000;
+  background-image: 
+    radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.05) 0%, transparent 60%),
+    radial-gradient(circle at 0% 100%, rgba(255, 255, 255, 0.02) 0%, transparent 40%);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-y: overlay;
+  letter-spacing: -0.011em;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 4px 24px -1px rgba(0, 0, 0, 0.4), 
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.04);
+}
+
+.glass-glossy {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    inset 0 0.5px 0px rgba(255, 255, 255, 0.2),
+    0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.glass-blue-glossy {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    inset 0 0.5px 0px rgba(255, 255, 255, 0.15),
+    0 20px 40px -15px rgba(0, 0, 0, 0.6);
+}
+
+.ios-glass {
+  background: rgba(20, 20, 25, 0.6);
+  backdrop-filter: blur(30px) saturate(200%);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.ios-card {
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.015);
+  backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 5px 25px -5px rgba(0,0,0,0.5);
+}
+
+.futuristic-gradient {
+  background: linear-gradient(135deg, #02FEDC 0%, #5A5CFF 50%, #F502FD 100%);
+  position: relative;
+}
+
+.futuristic-gradient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #02FEDC 0%, #5A5CFF 50%, #F502FD 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-white {
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.5) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.glow-primary {
+  box-shadow: 0 0 20px rgba(2, 254, 220, 0.2);
+}
+
+.glow-primary-strong {
+  box-shadow: 0 0 40px rgba(2, 254, 220, 0.4);
+}
+
+.dark-calendar-picker::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.dark-calendar-picker::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+}
