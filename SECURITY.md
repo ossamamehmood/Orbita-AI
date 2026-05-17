@@ -17,7 +17,7 @@ We take the security of our users seriously. If you discover a security vulnerab
 
 Please **do not** open a public issue for security-related bugs. Instead, send your report via one of the following methods:
 
-1. **Email**: Send a detailed report to [security@ossamamehmood.com](mailto:security@ossamamehmood.com).
+1. **Email**: Send a detailed report to [security@ossamamehmood.com](mailto:hello@ossamamehmood.com).
 2. **Private Disclosure**: Use the GitHub "Report a vulnerability" feature on the repository if available.
 
 ### 📝 What to Include

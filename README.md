@@ -69,4 +69,16 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
+## Support & Contact
+
+If you find this project useful, consider supporting my work or reaching out for custom enterprise integrations.
+
+| Platform | Link |
+| :--- | :--- |
+| **🌐 Website** | [ossamamehmood.com](https://ossamamehmood.com) |
+| **📧 Email** | [hello@ossamamehmood.com](mailto:hello@ossamamehmood.com) |
+| **☕ Support Me** | [Patreon](https://patreon.com/ossamamehmood) |
+
+---
+
 Built with ⚡ by [Ossama Mehmood](https://ossamamehmood.com)
