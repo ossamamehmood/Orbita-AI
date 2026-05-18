@@ -36,24 +36,28 @@ Orbita AI is not just a dashboard; it's a mission-control center for your digita
 <table width="100%" border="0">
   <tr>
     <td width="50%" align="center">
-      <img src="https://img.icons8.com/wired/100/A855F7/brain.png" width="48" height="48" /><br/>
+      <img src="https://img.icons8.com/fluency/96/brain.png" width="64" height="64" /><br/>
+      <br/>
       <b>Neural Link</b><br/>
       Direct integration with Gemini models for real-time task decomposition and strategic forecasting.
     </td>
     <td width="50%" align="center">
-      <img src="https://img.icons8.com/wired/100/A855F7/plasma-ball.png" width="48" height="48" /><br/>
+      <img src="https://img.icons8.com/fluency/96/activity.png" width="64" height="64" /><br/>
+      <br/>
       <b>Kinetic Interface</b><br/>
       Glassmorphic UI powered by hardware-accelerated motion logic and depth-perception shaders.
     </td>
   </tr>
   <tr>
     <td width="50%" align="center">
-      <img src="https://img.icons8.com/wired/100/A855F7/security-lock.png" width="48" height="48" /><br/>
+      <img src="https://img.icons8.com/fluency/96/lock.png" width="64" height="64" /><br/>
+      <br/>
       <b>Neural Encryption</b><br/>
       Zero-knowledge local persistence with AES-256 simulation and biometric identity verification.
     </td>
     <td width="50%" align="center">
-      <img src="https://img.icons8.com/wired/100/A855F7/synapse.png" width="48" height="48" /><br/>
+      <img src="https://img.icons8.com/fluency/96/workflow.png" width="64" height="64" /><br/>
+      <br/>
       <b>Synergetic Workspaces</b><br/>
       Dynamic sectoring of projects with hierarchical node structures and real-time telemetry.
     </td>
