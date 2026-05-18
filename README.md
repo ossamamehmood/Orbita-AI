@@ -90,12 +90,9 @@ npm run dev
 
 ---
 
-## 🛡️ Licensing & Security
+## 📄 Licensing & Security
 
-Orbita AI is committed to transparency and system integrity.
-
-- **License**: Released under the **MIT License**. View details in [LICENSE](.github/LICENSE).
-- **Security**: For information on reporting vulnerabilities or system audits, please refer to our [Security Policy](.github/SECURITY.md).
+Orbita AI is released under the **MIT License**. For information on reporting vulnerabilities or system audits, please refer to our [SECURITY.md](./SECURITY.md).
 
 ---
 
