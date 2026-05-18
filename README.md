@@ -42,7 +42,7 @@ Orbita AI is not just a dashboard; it's a mission-control center for your digita
       Direct integration with Gemini models for real-time task decomposition and strategic forecasting.
     </td>
     <td width="50%" align="center">
-      <img src="https://img.icons8.com/fluency/96/activity.png" width="64" height="64" /><br/>
+      <img src="https://img.icons8.com/fluency/96/shutter-speed.png" width="64" height="64" /><br/>
       <br/>
       <b>Kinetic Interface</b><br/>
       Glassmorphic UI powered by hardware-accelerated motion logic and depth-perception shaders.
