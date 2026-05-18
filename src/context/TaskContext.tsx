@@ -221,12 +221,12 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
       setTasks(prev => prev.map(t => 
         t.workspaceId === id ? { ...t, isDeleted: true, updatedAt: new Date().toISOString() } : t
       ));
-      addNotification('Sectors Decommissioned', `Workspace and its associated tasks purged from system.`, 'security');
+      addNotification('Workspace Deleted', `The workspace and its tasks have been removed.`, 'security');
     } else {
       setTasks(prev => prev.map(t => 
         t.workspaceId === id ? { ...t, workspaceId: targetWorkspace.id } : t
       ));
-      addNotification('Workspace Purged', `Workspace offline. Tasks reassigned to ${targetWorkspace.name}.`, 'security');
+      addNotification('Workspace Removed', `Office moved to ${targetWorkspace.name}.`, 'security');
     }
     
     toast.info(deleteTasks ? 'Workspace and tasks purged' : 'Workspace removed');
@@ -299,7 +299,7 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
       const task = prev.find(t => t.id === taskId);
       if (!task) return prev;
       
-      addNotification('Task Purged', `Task "${task.title}" archived in trash.`, 'security');
+      addNotification('Task Deleted', `"${task.title}" has been moved to trash.`, 'security');
       toast.info('Task moved to trash');
       
       return prev.map(t => 

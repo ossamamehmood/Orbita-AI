@@ -25,7 +25,7 @@ export function ThemeToggle() {
             exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
             transition={{ duration: 0.2, ease: "circOut" }}
           >
-            <Moon className="w-5 h-5 text-primary" />
+            <Moon className="w-5 h-5 svg-stroke-gradient" />
           </motion.div>
         ) : (
           <motion.div
@@ -35,7 +35,7 @@ export function ThemeToggle() {
             exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
             transition={{ duration: 0.2, ease: "circOut" }}
           >
-            <Sun className="w-5 h-5 text-primary" />
+            <Sun className="w-5 h-5 svg-stroke-gradient" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -43,7 +43,7 @@ export function ThemeToggle() {
       {/* Subtle indicator dot */}
       <motion.div 
         layoutId="theme-dot"
-        className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-accent shadow-[0_0_8px_rgba(245,2,253,0.5)]"
+        className="absolute -top-1 -right-1 w-2 h-2 rounded-full futuristic-gradient glow-gradient"
       />
     </button>
   );

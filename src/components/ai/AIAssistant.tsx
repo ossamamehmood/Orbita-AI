@@ -75,7 +75,7 @@ export default function AIAssistant() {
                 <div>
                   <h4 className="font-semibold text-foreground tracking-tight text-sm">Orbita Assistant</h4>
                   <div className="flex items-center gap-1.5 mt-0.5">
-                    <div className="w-1.5 h-1.5 rounded-full futuristic-gradient animate-pulse shadow-[0_0_10px_rgba(2,254,220,0.5)]" />
+                    <div className="w-1.5 h-1.5 rounded-full futuristic-gradient animate-pulse glow-gradient" />
                     <span className="text-[9px] text-foreground/30 uppercase font-bold tracking-wider">System Active</span>
                   </div>
                 </div>
@@ -99,9 +99,9 @@ export default function AIAssistant() {
                        <OrbitaLogo className="w-7 h-7 mr-3 mt-1 shrink-0 shadow-sm" />
                     )}
                     <div className={cn(
-                      "max-w-[85%] p-3.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap font-bold transition-colors duration-400",
+                      "max-w-[85%] p-3.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap font-bold transition-colors duration-400 shadow-md",
                       msg.role === 'user' 
-                        ? 'bg-primary text-primary-foreground shadow-md' 
+                        ? 'futuristic-gradient text-white' 
                         : 'bg-muted border border-border text-foreground'
                     )}>
                       {msg.content}
@@ -149,7 +149,7 @@ export default function AIAssistant() {
                 <Button 
                   type="submit" 
                   disabled={isTyping || !input.trim()} 
-                  className="w-10 h-10 rounded-full bg-primary text-primary-foreground hover:opacity-90 border-0 shadow-lg p-0 flex items-center justify-center shrink-0 disabled:opacity-30 transition-all font-bold"
+                  className="w-10 h-10 rounded-full futuristic-gradient text-white hover:opacity-90 border-0 shadow-lg p-0 flex items-center justify-center shrink-0 disabled:opacity-30 transition-all font-bold"
                 >
                   <Send className="w-4 h-4 fill-primary-foreground" />
                 </Button>
@@ -163,8 +163,8 @@ export default function AIAssistant() {
         <Button 
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            "w-16 h-16 sm:w-20 sm:h-20 rounded-[2rem] p-0 bg-background/40 backdrop-blur-2xl border border-border shadow-2xl shadow-primary/20 hover:scale-110 active:scale-95 transition-all relative group overflow-hidden pointer-events-auto",
-            isOpen && "border-primary/40 bg-card/5"
+            "w-16 h-16 sm:w-20 sm:h-20 rounded-[2rem] p-0 bg-background/40 backdrop-blur-2xl border border-border glow-gradient hover:scale-110 active:scale-95 transition-all relative group overflow-hidden pointer-events-auto",
+            isOpen && "border-primary/40 bg-card/5 shadow-inner"
           )}
         >
           <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -172,7 +172,7 @@ export default function AIAssistant() {
              {isOpen ? (
                <X className="w-full h-full text-foreground p-2" />
              ) : (
-               <OrbitaLogo className="w-full h-full drop-shadow-[0_0_20px_rgba(var(--primary-rgb),0.4)]" />
+               <OrbitaLogo className="w-full h-full drop-shadow-gradient" />
              )}
           </div>
         </Button>

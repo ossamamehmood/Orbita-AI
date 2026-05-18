@@ -41,12 +41,15 @@
   --foreground: #ffffff;
   
   --primary: #02FEDC;
+  --primary-rgb: 2, 254, 220;
   --primary-foreground: #000000;
   
   --secondary: #5A5CFF;
+  --secondary-rgb: 90, 92, 255;
   --secondary-foreground: #ffffff;
   
   --accent: #F502FD;
+  --accent-rgb: 245, 2, 253;
   --accent-foreground: #ffffff;
   
   --muted: rgba(255, 255, 255, 0.05);
@@ -70,13 +73,13 @@
   --foreground: #020617;
   
   --primary: #5A5CFF;
-  --primary-foreground: #ffffff;
+  --primary-rgb: 90, 92, 255;
   
   --secondary: #02FEDC;
-  --secondary-foreground: #000000;
+  --secondary-rgb: 2, 254, 220;
   
   --accent: #F502FD;
-  --accent-foreground: #ffffff;
+  --accent-rgb: 245, 2, 253;
   
   --muted: #f8fafc;
   --muted-foreground: #64748b;
@@ -249,6 +252,22 @@ body {
   color: transparent;
 }
 
+.group:hover .group-hover\:text-gradient {
+  background: linear-gradient(135deg, #02FEDC 0%, #5A5CFF 50%, #F502FD 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent !important;
+}
+
+.hover-text-gradient:hover {
+  background: linear-gradient(135deg, #02FEDC 0%, #5A5CFF 50%, #F502FD 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent !important;
+}
+
 .text-gradient-white {
   background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.5) 100%);
   -webkit-background-clip: text;
@@ -257,12 +276,42 @@ body {
   color: transparent;
 }
 
+.stroke-futuristic-gradient {
+  stroke: #02FEDC !important;
+}
+
+/* Standard SVG target */
+.svg-stroke-gradient, .svg-stroke-gradient * {
+  stroke: #02FEDC !important;
+  stroke: url(#futuristic-gradient) !important;
+}
+
+.group:hover .group-hover\:svg-stroke-gradient,
+.group:hover .group-hover\:svg-stroke-gradient * {
+  stroke: #02FEDC !important;
+  stroke: url(#futuristic-gradient) !important;
+}
+
 .glow-primary {
   box-shadow: 0 0 20px rgba(2, 254, 220, 0.2);
 }
 
 .glow-primary-strong {
   box-shadow: 0 0 40px rgba(2, 254, 220, 0.4);
+}
+
+.glow-gradient {
+  box-shadow: 
+    0 0 15px rgba(2, 254, 220, 0.4),
+    0 0 30px rgba(90, 92, 255, 0.2),
+    0 0 45px rgba(245, 2, 253, 0.1);
+}
+
+.drop-shadow-gradient {
+  filter: 
+    drop-shadow(0 0 8px rgba(2, 254, 220, 0.4))
+    drop-shadow(0 0 15px rgba(90, 92, 255, 0.3))
+    drop-shadow(0 0 25px rgba(245, 2, 253, 0.2));
 }
 
 .dark-calendar-picker::-webkit-calendar-picker-indicator {

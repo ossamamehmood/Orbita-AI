@@ -20,9 +20,9 @@ export default function Landing() {
           <span className="text-2xl font-display font-bold tracking-tight">Orbita <span className="text-gradient">AI</span></span>
         </div>
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-foreground/70">
-          <a href="#features" className="hover:text-primary transition-colors">Features</a>
-          <a href="#ai" className="hover:text-secondary transition-colors">AI Engine</a>
-          <a href="#analytics" className="hover:text-accent transition-colors">Analytics</a>
+          <a href="#features" className="hover:text-gradient transition-colors">Features</a>
+          <a href="#ai" className="hover:text-gradient transition-colors">AI Engine</a>
+          <a href="#analytics" className="hover:text-gradient transition-colors">Analytics</a>
         </div>
         <Button 
           onClick={signInWithGoogle}
@@ -107,7 +107,7 @@ export default function Landing() {
               title: "Deep Analytics",
               desc: "Track your productivity streak, focus hours, and AI insights with cinematic charts.",
               icon: BarChart3,
-              color: "text-accent",
+              color: "text-gradient",
               bg: "bg-accent/10"
             }
           ].map((feat, i) => (

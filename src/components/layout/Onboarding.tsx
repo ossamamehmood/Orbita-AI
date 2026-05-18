@@ -138,7 +138,7 @@ export default function Onboarding() {
                         )}
                         
                         {/* Hover Overlay */}
-                        <div className="absolute inset-0 bg-linear-to-br from-primary/20 to-accent/20 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center gap-2">
+                        <div className="absolute inset-0 bg-linear-to-br from-primary/40 to-secondary/40 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center gap-2">
                           <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-2xl">
                             <Camera className="w-6 h-6 text-black" />
                           </div>
@@ -205,8 +205,10 @@ export default function Onboarding() {
               className="space-y-12"
             >
               <div className="space-y-4">
-                <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-accent">
-                  <Zap className="w-4 h-4 fill-accent" />
+                <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-gradient">
+                  <div className="p-0.5 rounded-full futuristic-gradient">
+                    <Zap className="w-3 h-3 text-white" />
+                  </div>
                   Neural Directive
                 </div>
                 <h2 className="text-5xl font-display font-bold text-white tracking-tighter">System Objective</h2>
@@ -231,7 +233,7 @@ export default function Onboarding() {
               <div className="flex flex-col gap-8 pt-4">
                 <Button 
                   onClick={handleNext}
-                  className="w-full h-24 rounded-[2.5rem] futuristic-gradient text-white font-black text-2xl group shadow-[0_30px_60px_rgba(2,254,220,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all relative overflow-hidden"
+                  className="w-full h-24 rounded-[2.5rem] futuristic-gradient text-white font-black text-2xl group glow-gradient hover:scale-[1.02] active:scale-[0.98] transition-all relative overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <span className="relative z-10 flex items-center gap-4">
@@ -266,7 +268,7 @@ export default function Onboarding() {
             key={s}
             className={cn(
               "h-1 rounded-full transition-all duration-500",
-              step === s ? "w-8 futuristic-gradient shadow-[0_0_15px_rgba(2,254,220,0.3)]" : "w-4 bg-white/10"
+              step === s ? "w-8 futuristic-gradient glow-gradient" : "w-4 bg-white/10"
             )}
           />
         ))}

@@ -120,7 +120,7 @@ const TaskCard = React.memo(function TaskCard({
           <div className="flex items-start justify-between gap-2">
               <div className="space-y-0.5 min-w-0">
                 <div className="flex items-center gap-2">
-                  <h4 className={`text-base sm:text-lg font-semibold tracking-tight transition-all truncate ${task.status === 'completed' ? 'text-foreground/20 line-through' : 'text-foreground'}`}>
+                  <h4 className={`text-base sm:text-lg font-semibold tracking-tight transition-all truncate ${task.status === 'completed' ? 'text-foreground/20 line-through' : 'text-foreground group-hover:text-gradient'}`}>
                     {task.title}
                   </h4>
                   <Badge variant="outline" className={cn(
@@ -140,9 +140,9 @@ const TaskCard = React.memo(function TaskCard({
             
             <div className="flex items-center gap-2 sm:gap-3" onClick={e => e.stopPropagation()}>
               {task.dueDate && task.status !== 'completed' && (
-                <div className="hidden md:flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl bg-linear-to-r from-primary/20 to-accent/5 text-foreground border border-border text-[9px] sm:text-[10px] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(var(--primary-rgb),0.1)] backdrop-blur-xl group shrink-0 transition-colors">
-                  <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary group-hover:text-primary transition-colors" />
-                  <span className="group-hover:text-primary transition-all">DUE: {formatDistanceToNow(new Date(task.dueDate), { addSuffix: true })}</span>
+                <div className="hidden md:flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl bg-linear-to-r from-primary/20 to-primary/5 text-foreground border border-border text-[9px] sm:text-[10px] font-black uppercase tracking-widest glow-gradient backdrop-blur-xl group shrink-0 transition-colors">
+                  <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary transition-colors" />
+                  <span className="group-hover:text-gradient transition-all">DUE: {formatDistanceToNow(new Date(task.dueDate), { addSuffix: true })}</span>
                 </div>
               )}
               <DropdownMenu>
@@ -150,13 +150,13 @@ const TaskCard = React.memo(function TaskCard({
                   <MoreVertical className="w-4 h-4 text-foreground/40 group-hover:text-foreground transition-colors" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="glass-blue-glossy border-border text-foreground min-w-[160px] p-2 rounded-2xl shadow-2xl">
-                  <DropdownMenuItem onClick={toggleComplete} className="hover:bg-card/10 cursor-pointer rounded-xl flex items-center gap-2 py-2.5 group/menu">
-                    <CheckCircle2 className="w-4 h-4 text-blue-400 group-hover/menu:text-primary transition-colors" />
-                    <span className="text-sm font-bold group-hover/menu:text-foreground transition-colors">{task.status === 'completed' ? 'Mark Active' : 'Mark Complete'}</span>
+                  <DropdownMenuItem onClick={toggleComplete} className="hover:bg-card/10 cursor-pointer rounded-xl flex items-center gap-2 py-2.5 group/menu hover-text-gradient">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400 group-hover/menu:svg-stroke-gradient transition-all" />
+                    <span className="text-sm font-bold transition-colors">{task.status === 'completed' ? 'Mark Active' : 'Mark Complete'}</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); expandTaskAI(task.id); }} className="hover:bg-card/10 cursor-pointer rounded-xl flex items-center gap-2 py-2.5 group/menu">
-                    <Sparkles className="w-4 h-4 text-primary transition-colors" />
-                    <span className="text-sm font-bold group-hover/menu:text-foreground">AI Breakdown</span>
+                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); expandTaskAI(task.id); }} className="hover:bg-card/10 cursor-pointer rounded-xl flex items-center gap-2 py-2.5 group/menu hover-text-gradient">
+                    <Sparkles className="w-4 h-4 text-primary group-hover/menu:svg-stroke-gradient transition-all" />
+                    <span className="text-sm font-bold transition-colors text-foreground">AI Breakdown</span>
                   </DropdownMenuItem>
                   <div className="h-px bg-border my-2 mx-1" />
                   <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onDelete(); }} className="text-red-500/80 hover:bg-red-500/10 cursor-pointer rounded-xl flex items-center gap-2 py-2.5">
@@ -185,7 +185,7 @@ const TaskCard = React.memo(function TaskCard({
                   >
                     <div className={cn(
                       "w-4 h-4 rounded border transition-all flex items-center justify-center",
-                      st.completed ? "futuristic-gradient border-transparent shadow-[0_0_10px_rgba(var(--primary-rgb),0.2)]" : "border-border group-hover/sub:border-foreground/20"
+                      st.completed ? "futuristic-gradient border-transparent glow-gradient" : "border-border group-hover/sub:border-foreground/20"
                     )}>
                       {st.completed && <CheckCircle2 className="w-3 h-3 text-white" />}
                     </div>
@@ -202,7 +202,7 @@ const TaskCard = React.memo(function TaskCard({
                 <span>Execution Status</span>
                 <span>{task.progress}%</span>
               </div>
-              <Progress value={task.progress} className="h-1 bg-card/10 border-0" indicatorClassName="futuristic-gradient shadow-[0_0_8px_rgba(var(--primary-rgb),0.3)]" />
+              <Progress value={task.progress} className="h-1 bg-card/10 border-0" indicatorClassName="futuristic-gradient glow-gradient" />
             </div>
           )}
 

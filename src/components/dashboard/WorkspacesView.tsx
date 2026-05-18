@@ -53,10 +53,10 @@ export default function WorkspacesView({
     const taskCount = tasks.filter(t => t.workspaceId === wsId && !t.isDeleted).length;
     
     confirmAction({
-      title: `Purge Sector: ${wsName}?`,
-      description: `You are about to decommission this productivity sector. This will permanently synchronize and purge all ${taskCount} nodes assigned here.`,
-      impact: "Warning: All neural connections in this sector will be irrecoverably severed.",
-      confirmText: "Confirm Purge",
+      title: `Delete Workspace: ${wsName}?`,
+      description: `This will permanently delete the workspace and its ${taskCount} associated tasks.`,
+      impact: "All data within this workspace will be permanently lost.",
+      confirmText: "Delete Workspace",
       onConfirm: () => deleteWorkspace(wsId, true)
     });
   };
@@ -72,7 +72,7 @@ export default function WorkspacesView({
           onClick={() => setIsCreating(true)}
           className="h-10 px-6 rounded-full bg-primary text-primary-foreground hover:opacity-90 border-0 shadow-xl flex items-center gap-2 group w-full sm:w-auto justify-center"
         >
-          <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform" />
+          <Plus className="w-4 h-4 text-primary-foreground group-hover:rotate-90 transition-transform group-hover:svg-stroke-gradient" strokeWidth={2.5} />
           <span className="font-semibold text-sm">Initialize Sector</span>
         </Button>
       </div>
@@ -117,7 +117,7 @@ export default function WorkspacesView({
             >
               <div className="flex items-start justify-between">
                 <div className="w-12 h-12 rounded-xl bg-card flex items-center justify-center border border-border group-hover:border-primary/20 transition-all relative overflow-hidden backdrop-blur-3xl">
-                  <span className="relative z-10 text-xl font-display font-semibold uppercase text-foreground/60 group-hover:text-primary transition-colors">
+                  <span className="relative z-10 text-xl font-display font-semibold uppercase text-foreground/60 group-hover:text-gradient transition-colors">
                     {ws.name.substring(0, 1)}
                   </span>
                 </div>
@@ -137,7 +137,7 @@ export default function WorkspacesView({
                          className="flex items-center gap-2 text-red-500 focus:text-red-500 focus:bg-red-500/10 cursor-pointer rounded-lg py-2"
                        >
                          <Trash2 className="w-4 h-4" />
-                         <span className="font-semibold text-xs uppercase tracking-wider">Purge Sector</span>
+                         <span className="font-semibold text-xs uppercase tracking-wider">Delete Workspace</span>
                        </DropdownMenuItem>
                      </DropdownMenuContent>
                    </DropdownMenu>
@@ -145,7 +145,7 @@ export default function WorkspacesView({
               </div>
 
               <div className="space-y-2">
-                <h4 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors leading-tight">{ws.name}</h4>
+                <h4 className="text-xl font-semibold text-foreground group-hover:text-gradient transition-colors leading-tight">{ws.name}</h4>
                 <div className="flex flex-wrap items-center gap-2">
                   <div className="bg-card/10 text-foreground/30 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md border border-border">
                     {stats.total} Tasks
@@ -171,7 +171,7 @@ export default function WorkspacesView({
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
-                    className="h-full bg-primary rounded-full shadow-[0_0_10px_rgba(var(--primary-rgb),0.3)]"
+                    className="h-full bg-primary rounded-full glow-gradient"
                   />
                 </div>
               </div>
@@ -183,8 +183,8 @@ export default function WorkspacesView({
           onClick={() => setIsCreating(true)}
           className="p-8 rounded-3xl border border-dashed border-border hover:border-primary/20 hover:bg-card/10 transition-all flex flex-col items-center justify-center gap-3 text-foreground/20 hover:text-foreground group min-h-[240px]"
         >
-          <div className="w-10 h-10 rounded-full bg-card-foreground/5 flex items-center justify-center border border-border group-hover:bg-primary transition-all group-hover:rotate-90 shadow-sm">
-            <Plus className="w-5 h-5 text-foreground group-hover:text-primary-foreground transition-colors" />
+          <div className="w-10 h-10 rounded-full bg-card-foreground/5 flex items-center justify-center border border-border group-hover:futuristic-gradient transition-all group-hover:rotate-90 shadow-sm">
+            <Plus className="w-5 h-5 text-foreground group-hover:svg-stroke-gradient group-hover:rotate-90 transition-colors" strokeWidth={2.5} />
           </div>
           <span className="font-semibold text-xs uppercase tracking-wider">New Sector</span>
         </button>

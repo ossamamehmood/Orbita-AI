@@ -82,10 +82,11 @@ export default function Dashboard() {
   const [isWorkspacesExpanded, setIsWorkspacesExpanded] = useState(true);
   const [isCreatingWorkspace, setIsCreatingWorkspace] = useState(false);
   const [newWorkspaceName, setNewWorkspaceName] = useState("");
+  const [sortBy, setSortBy] = useState<'priority' | 'date' | 'status'>('priority');
   const [quickTaskDueDate, setQuickTaskDueDate] = useState<string>("");
 
   const filteredTasks = React.useMemo(() => {
-    return tasks.filter(task => {
+    let result = tasks.filter(task => {
       if (task.isDeleted) return false;
       
       // Search query filter
@@ -104,12 +105,34 @@ export default function Dashboard() {
       
       return true;
     });
-  }, [tasks, searchQuery, activeWorkspace, activeTab]);
+
+    // Sorting logic
+    result.sort((a, b) => {
+      if (sortBy === 'priority') {
+        const priorityOrder = { high: 0, medium: 1, low: 2 };
+        const pA = priorityOrder[a.priority as keyof typeof priorityOrder] ?? 1;
+        const pB = priorityOrder[b.priority as keyof typeof priorityOrder] ?? 1;
+        return pA - pB;
+      }
+      if (sortBy === 'date') {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      }
+      if (sortBy === 'status') {
+        const statusOrder = { todo: 0, 'in-progress': 1, completed: 2 };
+        const sA = statusOrder[a.status as keyof typeof statusOrder] ?? 0;
+        const sB = statusOrder[b.status as keyof typeof statusOrder] ?? 0;
+        return sA - sB;
+      }
+      return 0;
+    });
+
+    return result;
+  }, [tasks, searchQuery, activeWorkspace, activeTab, sortBy]);
 
   const stats = React.useMemo(() => [
     { label: "Active Tasks", value: tasks.filter(t => t.status !== 'completed' && !t.isDeleted).length, icon: Zap, color: "text-gradient" },
-    { label: "Synced Data", value: tasks.filter(t => t.status === 'completed' && !t.isDeleted).length, icon: CheckCircle2, color: "text-white/60" },
-    { label: "Efficiency", value: "98%", icon: TrendingUp, color: "text-white/40" },
+    { label: "Synced Data", value: tasks.filter(t => t.status === 'completed' && !t.isDeleted).length, icon: CheckCircle2, color: "text-foreground/60" },
+    { label: "Efficiency", value: "98%", icon: TrendingUp, color: "text-foreground/40" },
   ], [tasks]);
 
   const handleCreateWorkspace = React.useCallback(async (e?: React.FormEvent) => {
@@ -144,10 +167,10 @@ export default function Dashboard() {
 
   const triggerPurge = React.useCallback(() => {
     confirmAction({
-      title: "Decommission Entire System?",
-      description: "You are about to initiate a full system purge. This will permanently remove all nodes, workspaces, and operator profile data from the neural registry.",
-      impact: "Total reset of all stored productivity data. Systems will reboot to factory state.",
-      confirmText: "Purge Neural Registry",
+      title: "Reset Application Data?",
+      description: "This will permanently remove all your tasks, workspaces, and profile data. This action cannot be undone.",
+      impact: "Total data wipe. The application will return to its initial state.",
+      confirmText: "Reset All Data",
       onConfirm: () => resetSystem()
     });
   }, [confirmAction, resetSystem]);
@@ -157,10 +180,10 @@ export default function Dashboard() {
     const taskCount = tasks.filter(t => t.workspaceId === wsId && !t.isDeleted).length;
     
     confirmAction({
-      title: `Purge Workspace: ${ws?.name}?`,
-      description: `You are about to offline this workspace. By default, all ${taskCount} nodes inside will be permanently decommissioned.`,
-      impact: `${taskCount} active nodes will be purged from the neural grid.`,
-      confirmText: "Purge Everything",
+      title: `Delete Workspace: ${ws?.name}?`,
+      description: `All ${taskCount} tasks inside this workspace will be permanently deleted.`,
+      impact: `${taskCount} tasks will be removed from the system.`,
+      confirmText: "Delete Everything",
       onConfirm: () => deleteWorkspace(wsId, true)
     });
   }, [workspaces, tasks, confirmAction, deleteWorkspace]);
@@ -234,7 +257,7 @@ export default function Dashboard() {
                     {!isSidebarCollapsed && (
                       <button 
                         onClick={() => setActiveTab('workspaces')} 
-                        className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground hover:text-primary hover:scale-105 transition-all outline-none cursor-pointer"
+                        className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground hover:text-gradient hover:scale-105 transition-all outline-none cursor-pointer"
                       >
                         Workspaces
                       </button>
@@ -244,9 +267,9 @@ export default function Dashboard() {
                         variant="ghost" 
                         size="icon" 
                         onClick={() => setIsCreatingWorkspace(true)}
-                        className="w-5 h-5 hover:text-foreground group transition-colors"
+                        className="w-5 h-5 text-foreground/40 hover:text-foreground group transition-colors"
                       >
-                        <Plus className="w-4 h-4 group-hover:text-primary"/>
+                        <Plus className="w-4 h-4 group-hover:rotate-90 transition-all group-hover:svg-stroke-gradient"/>
                       </Button>
                     )}
                   </div>
@@ -295,7 +318,7 @@ export default function Dashboard() {
                                   className="text-[11px] text-foreground/40 truncate py-1 relative transition-all flex items-center gap-2 group/task cursor-pointer hover:text-foreground"
                                 >
                                   <div className="absolute -left-3 w-3 h-[1px] bg-border group-hover/task:bg-linear-to-r from-primary to-accent" />
-                                  <div className="w-1 h-1 rounded-full bg-foreground/20 group-hover/task:futuristic-gradient shrink-0 transition-all shadow-[0_0_8px_rgba(var(--primary-rgb),0)] group-hover/task:shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]" />
+                                  <div className="w-1 h-1 rounded-full bg-foreground/20 group-hover/task:futuristic-gradient shrink-0 transition-all glow-gradient" />
                                   <span className="truncate font-medium text-left">{task.title}</span>
                                 </motion.div>
                               ))}
@@ -355,13 +378,13 @@ export default function Dashboard() {
                             label={ws.name} 
                             icon={() => (
                               <div className="relative flex items-center justify-center w-8 h-8 group/folder">
-                                <Folder className={cn(
-                                  "w-full h-full transition-all",
-                                  activeWorkspace === ws.id ? "text-primary fill-primary/20" : "text-foreground/40 group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(2,254,220,0.4)]"
-                                )} />
+                                  <Folder className={cn(
+                                    "w-full h-full transition-all",
+                                    activeWorkspace === ws.id ? "svg-stroke-gradient fill-primary/10" : "text-foreground/40 group-hover:svg-stroke-gradient group-hover:drop-shadow-gradient"
+                                  )} />
                                 <span className={cn(
                                   "absolute top-[11px] font-black text-[10px] uppercase tracking-tighter flex items-center justify-center pointer-events-none",
-                                  activeWorkspace === ws.id ? "text-primary-foreground" : "text-foreground/60 group-hover:text-primary"
+                                  activeWorkspace === ws.id ? "text-primary-foreground" : "text-foreground/60 group-hover:text-gradient"
                                 )}>
                                   {ws.name.substring(0, 1)}
                                 </span>
@@ -387,10 +410,10 @@ export default function Dashboard() {
                                       e.dataTransfer.setData("taskId", task.id);
                                       e.dataTransfer.effectAllowed = "move";
                                     }}
-                                    className="text-[11px] text-white/40 truncate py-1 relative transition-all flex items-center gap-2 group/task cursor-grab active:cursor-grabbing hover:text-white"
+                                    className="text-[11px] text-foreground/40 truncate py-1 relative transition-all flex items-center gap-2 group/task cursor-grab active:cursor-grabbing hover:text-foreground"
                                   >
-                                    <div className="absolute -left-3 w-3 h-[1px] bg-white/5 group-hover/task:bg-linear-to-r group-hover/task:from-primary group-hover/task:to-accent" />
-                                    <div className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover/task:futuristic-gradient shrink-0 transition-all shadow-[0_0_8px_rgba(var(--primary-rgb),0)] group-hover/task:shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]" />
+                                    <div className="absolute -left-3 w-3 h-[1px] bg-border group-hover/task:bg-linear-to-r group-hover/task:from-primary group-hover/task:to-accent" />
+                                    <div className="w-1.5 h-1.5 rounded-full bg-foreground/20 group-hover/task:futuristic-gradient shrink-0 transition-all glow-gradient" />
                                     <span className="truncate font-medium text-left">{task.title}</span>
                                   </motion.div>
                                 ))}
@@ -423,33 +446,33 @@ export default function Dashboard() {
                       </div>
                       {!isSidebarCollapsed && (
                         <div className="min-w-0 text-left">
-                          <p className="text-sm font-bold text-foreground truncate group-hover/user:text-primary transition-all">{userProfile.name}</p>
+                          <p className="text-sm font-bold text-foreground truncate group-hover/user:text-gradient transition-all">{userProfile.name}</p>
                           <p className="text-[9px] text-foreground/30 uppercase tracking-widest font-black">Creator Profile</p>
                         </div>
                       )}
                     </div>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="glass-blue-glossy border-white/20 min-w-[240px] p-2 rounded-3xl mb-4 ml-4 shadow-2xl" align="start" side="right" sideOffset={10}>
-                    <div className="px-4 py-3 border-b border-white/10 mb-2">
+                  <DropdownMenuContent className="glass-blue-glossy border-border min-w-[240px] p-2 rounded-3xl mb-4 ml-4 shadow-2xl" align="start" side="right" sideOffset={10}>
+                    <div className="px-4 py-3 border-b border-border/10 mb-2">
                        <p className="text-[10px] font-black uppercase tracking-widest text-gradient">Biometric ID</p>
-                       <p className="text-sm font-bold text-white mt-1 truncate">{userProfile.name}</p>
+                       <p className="text-sm font-bold text-foreground mt-1 truncate">{userProfile.name}</p>
                     </div>
-                    <DropdownMenuItem onClick={() => setActiveTab('dashboard')} className="rounded-2xl py-3 px-4 hover:bg-white/5 cursor-pointer font-bold text-sm gap-3 group/item">
-                      <LayoutDashboard className="w-4 h-4 text-blue-400 group-hover/item:text-primary transition-colors" />
+                    <DropdownMenuItem onClick={() => setActiveTab('dashboard')} className="rounded-2xl py-3 px-4 hover:bg-card/10 cursor-pointer font-bold text-sm gap-3 group/item hover-text-gradient text-foreground">
+                      <LayoutDashboard className="w-4 h-4 text-blue-400 group-hover/item:svg-stroke-gradient transition-all" />
                       Orbita Dashboard
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setActiveTab('workspaces')} className="rounded-2xl py-3 px-4 hover:bg-white/5 cursor-pointer font-bold text-sm gap-3 group/item">
-                      <Layers className="w-4 h-4 text-secondary group-hover/item:text-accent transition-colors" />
+                    <DropdownMenuItem onClick={() => setActiveTab('workspaces')} className="rounded-2xl py-3 px-4 hover:bg-card/10 cursor-pointer font-bold text-sm gap-3 group/item hover-text-gradient text-foreground">
+                      <Layers className="w-4 h-4 text-primary group-hover/item:svg-stroke-gradient transition-all" />
                       Workspace Control
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setActiveTab('settings')} className="rounded-2xl py-3 px-4 hover:bg-white/5 cursor-pointer font-bold text-sm gap-3 group/item">
-                      <Settings2 className="w-4 h-4 text-accent group-hover/item:text-primary transition-colors" />
+                    <DropdownMenuItem onClick={() => setActiveTab('settings')} className="rounded-2xl py-3 px-4 hover:bg-card/10 cursor-pointer font-bold text-sm gap-3 group/item hover-text-gradient text-foreground">
+                      <Settings2 className="w-4 h-4 text-foreground/40 group-hover/item:svg-stroke-gradient transition-all" />
                       User Settings
                     </DropdownMenuItem>
-                    <div className="h-[1px] bg-white/5 my-2 mx-2" />
+                    <div className="h-[1px] bg-border my-2 mx-2" />
                     <DropdownMenuItem onClick={triggerPurge} className="rounded-2xl py-3 px-4 hover:bg-red-500/10 cursor-pointer font-bold text-sm gap-3 text-red-400">
                       <Trash2 className="w-4 h-4" />
-                      Purge Core
+                      Reset Everything
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -502,24 +525,24 @@ export default function Dashboard() {
                     className="absolute top-16 left-0 w-full glass-blue-glossy border border-white/20 rounded-3xl p-6 z-50 shadow-2xl max-h-[60vh] overflow-y-auto"
                   >
                     <div className="flex items-center justify-between mb-4 px-2">
-                       <h5 className="text-[10px] font-bold uppercase tracking-widest text-white/30">Search Results</h5>
+                       <h5 className="text-[10px] font-bold uppercase tracking-widest text-foreground/30">Search Results</h5>
                        <Button variant="ghost" size="sm" onClick={() => setSearchQuery("")} className="h-6 text-[9px] uppercase font-bold text-gradient">Clear</Button>
                     </div>
                     <div className="space-y-2">
                        {filteredTasks.length === 0 ? (
-                         <p className="text-sm text-white/20 text-center py-8 italic">No tasks found matching your query.</p>
+                         <p className="text-sm text-foreground/20 text-center py-8 italic">No tasks found matching your query.</p>
                        ) : (
                          filteredTasks.slice(0, 5).map(task => (
                            <div 
                             key={task.id} 
                             onClick={() => { setSearchQuery(""); setActiveTab("dashboard"); setActiveWorkspace(task.workspaceId); }}
-                            className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-primary/20 hover:bg-white/[0.05] transition-all cursor-pointer group"
+                            className="p-4 rounded-2xl bg-card/5 border border-border hover:border-primary/20 hover:bg-card/10 transition-all cursor-pointer group"
                            >
                               <div className="flex items-center justify-between">
-                                <p className="text-sm font-bold text-white group-hover:text-gradient transition-colors">{task.title}</p>
-                                <Badge className="text-[8px] bg-white/5 text-white/40">{workspaces.find(w => w.id === task.workspaceId)?.name}</Badge>
+                                <p className="text-sm font-bold text-foreground group-hover:text-gradient transition-colors">{task.title}</p>
+                                <Badge className="text-[8px] bg-primary/10 text-primary border-primary/20">{workspaces.find(w => w.id === task.workspaceId)?.name}</Badge>
                               </div>
-                              <p className="text-xs text-white/30 mt-1 line-clamp-1">{task.description}</p>
+                              <p className="text-xs text-foreground/30 mt-1 line-clamp-1">{task.description}</p>
                            </div>
                          ))
                        )}
@@ -542,7 +565,7 @@ export default function Dashboard() {
               >
                 <Bell className="w-4.5 h-4.5 text-foreground/60" />
                 {notifications.length > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 futuristic-gradient text-[8px] sm:text-[10px] flex items-center justify-center font-black text-white rounded-full border-2 border-background shadow-[0_0_15px_rgba(2,254,220,0.5)] animate-bounce-subtle pointer-events-none">
+                  <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 futuristic-gradient text-[8px] sm:text-[10px] flex items-center justify-center font-black text-white rounded-full border-2 border-background glow-gradient animate-bounce-subtle pointer-events-none">
                     {notifications.length}
                   </span>
                 )}
@@ -563,7 +586,7 @@ export default function Dashboard() {
                     notifications.map((n, idx) => (
                       <div key={idx} className="space-y-1 group cursor-pointer border-b border-border pb-3 last:border-0 hover:border-primary/20 transition-colors">
                         <div className="flex items-center justify-between">
-                          <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">{n.title}</p>
+                          <p className="text-xs font-bold text-foreground group-hover:text-gradient transition-colors">{n.title}</p>
                           <span className="text-[8px] text-foreground/20 font-bold uppercase">{n.time}</span>
                         </div>
                         <p className="text-[10px] text-foreground/40 leading-relaxed truncate">{n.desc}</p>
@@ -577,7 +600,7 @@ export default function Dashboard() {
                     onClick={(e) => { e.stopPropagation(); clearNotifications(); }}
                     className="w-full h-10 rounded-xl text-[10px] font-bold uppercase tracking-widest text-foreground hover:bg-primary/5 transition-colors border border-primary/10 group"
                   >
-                    <span className="group-hover:text-primary transition-colors">Clear All Logs</span>
+                    <span className="group-hover:text-gradient transition-colors">Clear All Logs</span>
                   </Button>
                 )}
               </DropdownMenuContent>
@@ -596,25 +619,25 @@ export default function Dashboard() {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="glass-blue-glossy border-border min-w-[240px] p-2 rounded-[1.5rem] shadow-2xl mt-4" align="end">
                 <div className="px-4 py-3 border-b border-border mb-2">
-                   <p className="text-[10px] font-black uppercase tracking-widest text-primary">Biometric Identity</p>
+                   <p className="text-[10px] font-black uppercase tracking-widest text-gradient">Biometric Identity</p>
                    <h4 className="text-sm font-bold text-foreground mt-1 truncate">{userProfile.name}</h4>
                 </div>
-                <DropdownMenuItem onClick={() => setActiveTab('dashboard')} className="rounded-xl py-3 px-4 hover:bg-card/10 cursor-pointer font-bold text-xs uppercase tracking-widest gap-3 group/item">
-                   <LayoutDashboard className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
+                <DropdownMenuItem onClick={() => setActiveTab('dashboard')} className="rounded-xl py-3 px-4 hover:bg-card/10 cursor-pointer font-bold text-xs uppercase tracking-widest gap-3 group/item hover-text-gradient">
+                   <LayoutDashboard className="w-4 h-4 text-primary group-hover:stroke-[url(#futuristic-gradient)] transition-all" />
                    Orbita Dashboard
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setActiveTab('workspaces')} className="rounded-xl py-3 px-4 hover:bg-card/10 cursor-pointer font-bold text-xs uppercase tracking-widest gap-3 group/item">
-                   <Layers className="w-4 h-4 text-blue-500 group-hover:scale-110 transition-transform" />
+                <DropdownMenuItem onClick={() => setActiveTab('workspaces')} className="rounded-xl py-3 px-4 hover:bg-card/10 cursor-pointer font-bold text-xs uppercase tracking-widest gap-3 group/item hover-text-gradient">
+                   <Layers className="w-4 h-4 text-blue-500 group-hover:stroke-[url(#futuristic-gradient)] transition-all" />
                    Workspace Control
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setActiveTab('settings')} className="rounded-xl py-3 px-4 hover:bg-card/10 cursor-pointer font-bold text-xs uppercase tracking-widest gap-3 group/item">
-                   <Settings2 className="w-4 h-4 text-accent group-hover:scale-110 transition-transform" />
+                <DropdownMenuItem onClick={() => setActiveTab('settings')} className="rounded-xl py-3 px-4 hover:bg-card/10 cursor-pointer font-bold text-xs uppercase tracking-widest gap-3 group/item hover-text-gradient">
+                   <Settings2 className="w-4 h-4 text-foreground/40 group-hover:stroke-[url(#futuristic-gradient)] transition-all" />
                    User Settings
                 </DropdownMenuItem>
                 <div className="h-[1px] bg-border my-2 mx-2" />
                 <DropdownMenuItem onClick={() => triggerPurge()} className="rounded-xl py-3 px-4 hover:bg-red-500/10 text-red-400 cursor-pointer font-bold text-xs uppercase tracking-widest gap-3">
                    <Power className="w-4 h-4" />
-                   Decommission Sync
+                   Reset All Data
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -642,7 +665,7 @@ export default function Dashboard() {
                         <div className="space-y-2">
                           <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-medium tracking-tight text-foreground leading-[1.1]">
                             Good morning, <br />
-                            <span className="text-gradient font-bold drop-shadow-[0_0_30px_rgba(var(--primary-rgb),0.3)]">{userProfile.name}</span>
+                            <span className="text-gradient font-bold drop-shadow-gradient">{userProfile.name}</span>
                           </h2>
                         </div>
                         <p className="text-foreground/40 text-lg sm:text-xl font-medium max-w-xl leading-relaxed">
@@ -669,23 +692,12 @@ export default function Dashboard() {
                         </div>
                         <div className={cn(
                           "w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-card flex items-center justify-center border border-border group-hover:bg-card-foreground/10 group-hover:scale-110 transition-all duration-700 relative shadow-inner overflow-hidden",
-                          stat.label === "Active Tasks" && "group-hover:border-primary/50 group-hover:glow-primary"
+                          stat.label === "Active Tasks" && "group-hover:border-primary/50 group-hover:glow-gradient"
                         )}>
                           <stat.icon className={cn(
                             "w-6 h-6 sm:w-8 sm:h-8 transition-all duration-500",
-                            stat.label === "Active Tasks" ? "stroke-[url(#futuristic-gradient)]" : "text-foreground opacity-60 group-hover:opacity-100"
+                            stat.label === "Active Tasks" ? "svg-stroke-gradient" : "text-foreground opacity-60 group-hover:opacity-100"
                           )} />
-                          {stat.label === "Active Tasks" && (
-                            <svg width="0" height="0" className="absolute">
-                              <defs>
-                                <linearGradient id="futuristic-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                  <stop offset="0%" stopColor="#02FEDC" />
-                                  <stop offset="50%" stopColor="#5A5CFF" />
-                                  <stop offset="100%" stopColor="#F502FD" />
-                                </linearGradient>
-                              </defs>
-                            </svg>
-                          )}
                         </div>
                       </motion.div>
                     ))}
@@ -707,10 +719,10 @@ export default function Dashboard() {
                                 variant="ghost" 
                                 onClick={() => {
                                   confirmAction({
-                                    title: "Dump Completed Cycles?",
-                                    description: "You are about to permanently purge all successfully synchronized nodes from the system registry.",
-                                    impact: "Clean slate for current workflow sector. No recovery possible once purged.",
-                                    confirmText: "Purge Synced Tasks",
+                                    title: "Clear Completed Tasks?",
+                                    description: "This will remove all your finished tasks from the system registry.",
+                                    impact: "Finished tasks will be permanently deleted.",
+                                    confirmText: "Clear Tasks",
                                     onConfirm: () => {
                                       const completedTasks = tasks.filter(t => t.status === 'completed' && !t.isDeleted);
                                       completedTasks.forEach(t => deleteTask(t.id));
@@ -719,15 +731,17 @@ export default function Dashboard() {
                                 }}
                                 className="text-[11px] font-black uppercase tracking-widest h-10 px-6 rounded-xl border border-red-500/20 text-red-500 hover:bg-red-500/10 shadow-lg shadow-red-500/5 transition-all"
                               >
-                                Decommission Synced Tasks
+                                Clear Completed Tasks
                               </Button>
                             )}
                             <DropdownMenu>
-                              <DropdownMenuTrigger className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-[11px] font-black uppercase tracking-widest h-10 px-6 rounded-xl border border-border bg-card/5 hover:bg-card/20 shadow-sm transition-all")}>Sort By: Priority</DropdownMenuTrigger>
+                              <DropdownMenuTrigger className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-[11px] font-black uppercase tracking-widest h-10 px-6 rounded-xl border border-border bg-card/5 hover:bg-primary/10 hover:text-gradient shadow-sm transition-all")}>
+                                Sort By: {sortBy === 'priority' ? 'Priority' : sortBy === 'date' ? 'Date Created' : 'Status'}
+                              </DropdownMenuTrigger>
                               <DropdownMenuContent className="glass-blue-glossy border-border text-foreground p-2 rounded-2xl shadow-2xl backdrop-blur-3xl min-w-[160px]">
-                                <DropdownMenuItem className="hover:bg-card/10 cursor-pointer rounded-xl font-bold py-2.5">Priority</DropdownMenuItem>
-                                <DropdownMenuItem className="hover:bg-card/10 cursor-pointer rounded-xl font-bold py-2.5">Date Created</DropdownMenuItem>
-                                <DropdownMenuItem className="hover:bg-card/10 cursor-pointer rounded-xl font-bold py-2.5">Status</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setSortBy('priority')} className="hover:bg-card/10 hover-text-gradient cursor-pointer rounded-xl font-bold py-2.5 transition-colors">Priority</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setSortBy('date')} className="hover:bg-card/10 hover-text-gradient cursor-pointer rounded-xl font-bold py-2.5 transition-colors">Date Created</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setSortBy('status')} className="hover:bg-card/10 hover-text-gradient cursor-pointer rounded-xl font-bold py-2.5 transition-colors">Status</DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </div>
@@ -744,9 +758,9 @@ export default function Dashboard() {
                           <div className="space-y-6">
                             {tasks.filter(t => !t.isDeleted).slice(0, 8).map(task => (
                               <div key={task.id} className="flex items-center gap-5 group cursor-pointer">
-                                <div className={`w-1.5 h-8 rounded-full ${task.status === 'completed' ? 'futuristic-gradient shadow-[0_0_10px_rgba(2,254,220,0.5)]' : 'bg-card border border-border group-hover:border-primary/50'} transition-all duration-300`} />
+                                <div className={`w-1.5 h-8 rounded-full ${task.status === 'completed' ? 'futuristic-gradient glow-gradient' : 'bg-card border border-border group-hover:border-primary/50'} transition-all duration-300`} />
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-bold truncate group-hover:text-primary transition-colors text-foreground/80 uppercase tracking-tight">{task.title}</p>
+                                  <p className="text-sm font-bold truncate group-hover:text-gradient transition-colors text-foreground/80 uppercase tracking-tight">{task.title}</p>
                                   <p className="text-[9px] text-foreground/20 uppercase tracking-[0.2em] font-black mt-0.5">Node: {task.status.toUpperCase()}</p>
                                 </div>
                                 <ChevronRight className="w-4 h-4 text-foreground/10 group-hover:text-foreground transition-all transform group-hover:translate-x-1" />
@@ -763,120 +777,122 @@ export default function Dashboard() {
         </div>
         
         {/* Floating Quick Add */}
-        <div className={cn(
-          "fixed bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 z-40 w-full px-4 transition-all duration-500",
-          isAddingTask ? "max-w-3xl" : "max-w-md"
-        )}>
-           {isAddingTask ? (
-             <motion.form 
-               initial={{ y: 20, opacity: 0, scale: 0.98 }}
-               animate={{ y: 0, opacity: 1, scale: 1 }}
-               onSubmit={handleQuickAdd}
-               className="glass-blue-glossy rounded-[2rem] p-5 sm:p-6 flex flex-col gap-5 border-border shadow-[0_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden"
-             >
-                <div className="absolute top-0 right-0 p-4 sm:p-5 z-10">
-                   <Button 
-                    type="button" 
-                    variant="ghost" 
-                    size="icon" 
-                    onClick={() => setIsAddingTask(false)}
-                    className="text-foreground/20 hover:text-foreground h-7 w-7 rounded-full"
-                   >
-                    <X className="w-4 h-4" />
-                   </Button>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-6 rounded-full futuristic-gradient shadow-[0_0_10px_rgba(2,244,220,0.5)]" />
-                    <h3 className="text-sm font-black uppercase tracking-[0.3em] text-foreground/40">New Workflow Cycle</h3>
+        {activeTab !== 'settings' && (
+          <div className={cn(
+            "fixed bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 z-40 w-full px-4 transition-all duration-500",
+            isAddingTask ? "max-w-3xl" : "max-w-md"
+          )}>
+             {isAddingTask ? (
+               <motion.form 
+                 initial={{ y: 20, opacity: 0, scale: 0.98 }}
+                 animate={{ y: 0, opacity: 1, scale: 1 }}
+                 onSubmit={handleQuickAdd}
+                 className="glass-blue-glossy rounded-[2rem] p-5 sm:p-6 flex flex-col gap-5 border-border shadow-[0_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden"
+               >
+                  <div className="absolute top-0 right-0 p-4 sm:p-5 z-10">
+                     <Button 
+                      type="button" 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={() => setIsAddingTask(false)}
+                      className="text-foreground/20 hover:text-foreground h-7 w-7 rounded-full"
+                     >
+                      <X className="w-4 h-4" />
+                     </Button>
+                  </div>
+  
+                  <div className="space-y-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-1.5 h-6 rounded-full futuristic-gradient glow-gradient" />
+                          <h3 className="text-sm font-black uppercase tracking-[0.3em] text-foreground/40">New Workflow Cycle</h3>
+                        </div>
+                    
+                    <div className="bg-card/60 backdrop-blur-2xl border border-border rounded-2xl sm:rounded-[2rem] p-1 sm:p-2 shadow-inner group/neural">
+                      <textarea 
+                        autoFocus
+                        placeholder="Input neural data..."
+                        value={quickTaskTitle}
+                        onChange={(e) => setQuickTaskTitle(e.target.value)}
+                        className="w-full bg-transparent border-none focus:outline-none text-foreground font-medium p-3 sm:p-4 text-base sm:text-lg min-h-[100px] sm:min-h-[120px] max-h-[300px] scrollbar-none placeholder:text-foreground/10 resize-none group-focus-within/neural:placeholder:text-foreground/20 transition-all font-sans"
+                      />
+                    </div>
+                  </div>
+  
+                  <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+                    <div className="flex items-center gap-3 bg-card/5 px-4 sm:px-6 rounded-[1.2rem] sm:rounded-[1.5rem] border border-border focus-within:border-primary/40 focus-within:bg-card/10 transition-all shadow-xl h-12 sm:h-14 w-full sm:w-auto group/qdate">
+                      <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-primary group-hover/qdate:scale-110 transition-transform" />
+                      <input 
+                        type="date"
+                        value={quickTaskDueDate}
+                        onChange={(e) => setQuickTaskDueDate(e.target.value)}
+                        className="bg-transparent text-[10px] sm:text-xs uppercase font-black text-foreground/60 group-focus-within/qdate:text-foreground border-none outline-none py-2 cursor-pointer dark-calendar-picker flex-1 min-w-0"
+                      />
+                      <span className="text-[10px] font-black uppercase tracking-widest text-foreground/20 hidden lg:block">Deadline</span>
+                    </div>
+  
+                    <div className="flex items-center gap-4 ml-auto w-full sm:w-auto">
+                      <Button 
+                        type="submit"
+                        disabled={!quickTaskTitle.trim()}
+                        className="flex-1 sm:flex-none h-12 sm:h-14 px-8 sm:px-10 rounded-xl sm:rounded-2xl futuristic-gradient text-white border-0 shadow-2xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all font-black uppercase tracking-widest text-[9px] sm:text-[10px] gap-3"
+                      >
+                        <span>Instantiate Task</span>
+                        <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+                      </Button>
+                    </div>
                   </div>
                   
-                  <div className="bg-card/60 backdrop-blur-2xl border border-border rounded-2xl sm:rounded-[2rem] p-1 sm:p-2 shadow-inner group/neural">
-                    <textarea 
-                      autoFocus
-                      placeholder="Input neural data..."
-                      value={quickTaskTitle}
-                      onChange={(e) => setQuickTaskTitle(e.target.value)}
-                      className="w-full bg-transparent border-none focus:outline-none text-foreground font-medium p-3 sm:p-4 text-base sm:text-lg min-h-[100px] sm:min-h-[120px] max-h-[300px] scrollbar-none placeholder:text-foreground/10 resize-none group-focus-within/neural:placeholder:text-foreground/20 transition-all font-sans"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-                  <div className="flex items-center gap-3 bg-card/5 px-4 sm:px-6 rounded-[1.2rem] sm:rounded-[1.5rem] border border-border focus-within:border-primary/40 focus-within:bg-card/10 transition-all shadow-xl h-12 sm:h-14 w-full sm:w-auto group/qdate">
-                    <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-primary group-hover/qdate:scale-110 transition-transform" />
-                    <input 
-                      type="date"
-                      value={quickTaskDueDate}
-                      onChange={(e) => setQuickTaskDueDate(e.target.value)}
-                      className="bg-transparent text-[10px] sm:text-xs uppercase font-black text-foreground/60 group-focus-within/qdate:text-foreground border-none outline-none py-2 cursor-pointer dark-calendar-picker flex-1 min-w-0"
-                    />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-foreground/20 hidden lg:block">Deadline</span>
-                  </div>
-
-                  <div className="flex items-center gap-4 ml-auto w-full sm:w-auto">
-                    <Button 
-                      type="submit"
-                      disabled={!quickTaskTitle.trim()}
-                      className="flex-1 sm:flex-none h-12 sm:h-14 px-8 sm:px-10 rounded-xl sm:rounded-2xl futuristic-gradient text-white border-0 shadow-2xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all font-black uppercase tracking-widest text-[9px] sm:text-[10px] gap-3"
-                    >
-                      <span>Instantiate Task</span>
-                      <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="flex flex-wrap items-center gap-2 px-1 pt-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-foreground/20 mr-2">Target Sector:</span>
-                  {workspaces.map(ws => (
+                  <div className="flex flex-wrap items-center gap-2 px-1 pt-2">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-foreground/20 mr-2">Target Sector:</span>
+                    {workspaces.map(ws => (
+                      <button
+                        key={ws.id}
+                        type="button"
+                        onClick={() => setActiveWorkspace(ws.id)}
+                        className={cn(
+                          "px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all",
+                          activeWorkspace === ws.id 
+                            ? "futuristic-gradient text-white shadow-lg shadow-primary/20" 
+                            : "bg-card/5 text-foreground/30 border border-border hover:bg-card/10"
+                        )}
+                      >
+                        {ws.name}
+                      </button>
+                    ))}
                     <button
-                      key={ws.id}
                       type="button"
-                      onClick={() => setActiveWorkspace(ws.id)}
+                      onClick={() => setActiveWorkspace(null)}
                       className={cn(
                         "px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all",
-                        activeWorkspace === ws.id 
+                        activeWorkspace === null 
                           ? "futuristic-gradient text-white shadow-lg shadow-primary/20" 
                           : "bg-card/5 text-foreground/30 border border-border hover:bg-card/10"
                       )}
                     >
-                      {ws.name}
+                      Orbita Core
                     </button>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => setActiveWorkspace(null)}
-                    className={cn(
-                      "px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all",
-                      activeWorkspace === null 
-                        ? "futuristic-gradient text-white shadow-lg shadow-primary/20" 
-                        : "bg-card/5 text-foreground/30 border border-border hover:bg-card/10"
-                    )}
-                  >
-                    Orbita Core
-                  </button>
-                </div>
-             </motion.form>
-           ) : (
-             <Button 
-               onClick={() => setIsAddingTask(true)}
-               className="w-full h-14 sm:h-16 rounded-[2rem] glass-blue-glossy border-border text-foreground shadow-2xl shadow-primary/10 group transition-all hover:scale-[1.02] hover:border-primary/20 flex items-center justify-between px-8 relative overflow-hidden"
-             >
-                <div className="absolute inset-0 bg-linear-to-r from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="flex items-center gap-4 relative z-10">
-                  <div className="p-2 rounded-xl bg-card border border-border group-hover:border-primary/50 transition-all shadow-inner">
-                    <Plus className="w-5 h-5 text-primary group-hover:rotate-90 transition-transform shrink-0" />
                   </div>
-                  <span className="font-bold text-base sm:text-lg tracking-tight text-foreground/90 group-hover:text-primary transition-all">Initiate New Task Cycle</span>
-                </div>
-                <div className="flex items-center gap-2 opacity-50 group-hover:opacity-100 transition-all hidden sm:flex relative z-10">
-                   <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]" />
-                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 group-hover:text-foreground">Active Uplink</span>
-                </div>
-             </Button>
-           )}
-        </div>
+               </motion.form>
+             ) : (
+               <Button 
+                 onClick={() => setIsAddingTask(true)}
+                 className="w-full h-14 sm:h-16 rounded-[2rem] glass-blue-glossy border-border text-foreground shadow-2xl shadow-primary/10 group transition-all hover:scale-[1.02] hover:border-primary/20 flex items-center justify-between px-8 relative overflow-hidden"
+               >
+                  <div className="absolute inset-0 bg-linear-to-r from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="flex items-center gap-4 relative z-10">
+                    <div className="p-2 rounded-full bg-card border border-border group-hover:border-primary/50 transition-all shadow-inner">
+                      <Plus className="w-5 h-5 text-foreground group-hover:rotate-90 transition-all shrink-0 group-hover:svg-stroke-gradient" strokeWidth={3} />
+                    </div>
+                    <span className="font-bold text-base sm:text-lg tracking-tight text-foreground/90 group-hover:text-gradient transition-all">Initiate New Task Cycle</span>
+                  </div>
+                  <div className="flex items-center gap-2 opacity-50 group-hover:opacity-100 transition-all hidden sm:flex relative z-10">
+                     <div className="w-1.5 h-1.5 rounded-full futuristic-gradient animate-pulse glow-gradient" />
+                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 group-hover:text-foreground">Active Uplink</span>
+                  </div>
+               </Button>
+             )}
+          </div>
+        )}
 
         {/* AI Assistant Floating Widget */}
         <AIAssistant />
@@ -968,7 +984,7 @@ const SidebarItem = React.memo(function SidebarItem({
       return <Icon />;
     }
     // It's a standard Lucide component
-    return <Icon className={cn("w-7 h-7 shrink-0 transition-colors", active ? "text-white" : "group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(2,254,220,0.5)]")} />;
+    return <Icon className={cn("w-7 h-7 shrink-0 transition-colors", active ? "text-white" : "group-hover:text-white group-hover:drop-shadow-gradient")} />;
   };
 
   return (
@@ -999,7 +1015,7 @@ const SidebarItem = React.memo(function SidebarItem({
         className={cn(
           "w-full flex items-center gap-3 py-3 rounded-xl transition-all duration-300 group relative",
           active 
-            ? "futuristic-gradient text-white shadow-lg shadow-primary/20" 
+            ? "futuristic-gradient text-white glow-gradient shadow-lg" 
             : "text-foreground/50 hover:text-foreground hover:bg-card/40 hover:border-border",
           collapsed ? "justify-center px-0" : "px-4",
           isOver && "border-2 border-primary/50 bg-primary/5 scale-[1.02]"

@@ -26,6 +26,17 @@ function AppContent() {
 
   return (
     <div className="bg-background min-h-screen relative overflow-hidden transition-colors duration-500">
+      {/* Global SVG Definitions placed at top for reliable reference */}
+      <svg style={{ position: 'absolute', width: 0, height: 0, pointerEvents: 'none', overflow: 'hidden' }} aria-hidden="true">
+        <defs>
+          <linearGradient id="futuristic-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#02FEDC" />
+            <stop offset="50%" stopColor="#5A5CFF" />
+            <stop offset="100%" stopColor="#F502FD" />
+          </linearGradient>
+        </defs>
+      </svg>
+      
       {userProfile.isFirstTime && (
         <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-background flex items-center justify-center">
           <div className="relative w-[1080px] h-[1080px]">
@@ -54,6 +65,7 @@ function AppContent() {
           </motion.div>
         )}
       </AnimatePresence>
+      
       <Toaster theme={theme} richColors position="top-right" />
     </div>
   );

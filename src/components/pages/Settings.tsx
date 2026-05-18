@@ -36,10 +36,10 @@ export default function Settings() {
 
   const triggerPurge = () => {
     confirmAction({
-      title: "Decommission Entire System?",
-      description: "You are about to initiate a full system purge. This will permanently remove all tasks, workspaces, and operator profile data from the neural registry.",
-      impact: "Total reset of all stored productivity data. Systems will reboot to factory state.",
-      confirmText: "Purge Neural Registry",
+      title: "Reset Application Data?",
+      description: "This will permanently remove all your tasks, workspaces, and profile settings from the application.",
+      impact: "The application will be reset to its initial state.",
+      confirmText: "Reset All data",
       onConfirm: () => resetSystem()
     });
   };
@@ -93,7 +93,7 @@ export default function Settings() {
                 
                 {/* Hover Overlay */}
                 <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-2">
-                  <Camera className="w-8 h-8 text-primary shadow-[0_0_15px_rgba(2,254,220,0.5)]" />
+                  <Camera className="w-8 h-8 text-primary drop-shadow-gradient" />
                   <span className="text-[10px] font-bold text-white uppercase tracking-widest">Update</span>
                 </div>
                 
@@ -102,7 +102,7 @@ export default function Settings() {
             </div>
             
             {/* Status dot */}
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-primary border-4 border-background shadow-[0_0_12px_rgba(2,254,220,0.5)] z-20" />
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-primary border-4 border-background glow-gradient z-20" />
           </div>
           
           <div className="flex-1 w-full space-y-6 relative z-10">
@@ -138,15 +138,15 @@ export default function Settings() {
                 >
                   <div className="flex items-center gap-6">
                     <div className="w-14 h-14 rounded-2xl bg-card flex items-center justify-center group-hover:scale-110 group-hover:bg-primary/10 transition-all duration-500 shadow-xl">
-                      <item.icon className="w-7 h-7 text-foreground/40 group-hover:text-primary transition-colors" />
+                      <item.icon className="w-7 h-7 text-foreground/40 group-hover:svg-stroke-gradient transition-all" />
                     </div>
                     <div>
-                      <p className="text-base font-bold text-foreground tracking-tight">{item.label}</p>
+                      <p className="text-base font-bold text-foreground tracking-tight group-hover:text-gradient transition-all">{item.label}</p>
                       <p className="text-[10px] text-foreground/30 font-bold uppercase tracking-widest mt-1">{item.value}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-5">
-                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 text-[9px] px-4 py-1.5 rounded-full uppercase tracking-[0.2em] font-black">
+                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 text-[9px] px-4 py-1.5 rounded-full uppercase tracking-[0.2em] font-black group-hover:futuristic-gradient group-hover:text-white transition-all">
                       {item.status}
                     </Badge>
                     <ChevronRight className="w-5 h-5 text-foreground/10 group-hover:text-foreground transition-all transform group-hover:translate-x-1" />
@@ -165,7 +165,7 @@ export default function Settings() {
           className="rounded-2xl h-12 px-8 font-bold text-red-500/60 hover:text-red-500 hover:bg-red-500/10 transition-all gap-2"
         >
           <Trash2 className="w-4 h-4" />
-          Purge System Registry
+          Reset All Data
         </Button>
         <div className="flex gap-4">
           <Button variant="ghost" onClick={() => updateProfile({ isFirstTime: true })} className="rounded-2xl h-12 px-8 font-bold text-foreground/40 hover:text-foreground transition-colors">Start Onboarding</Button>
