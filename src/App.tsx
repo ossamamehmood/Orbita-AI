@@ -30,9 +30,9 @@ function AppContent() {
         <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-background flex items-center justify-center">
           <div className="relative w-[1080px] h-[1080px]">
             <Orb
-              hue={theme === 'dark' ? 324 : 220}
-              hoverIntensity={0.2}
-              rotateOnHover
+              hue={theme === 'dark' ? 324 : 311}
+              hoverIntensity={theme === 'dark' ? 0.2 : 0.22}
+              rotateOnHover={theme === 'dark' ? true : false}
               forceHoverState={false}
               backgroundColor={theme === 'dark' ? "#000000" : "#ffffff"}
             />
