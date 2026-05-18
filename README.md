@@ -1,7 +1,7 @@
-# 🌌 Orbita AI
+# Orbita AI
 
 <div align="center">
-  <img src=".github/Orbita%20AI%20(Overview).gif" alt="Orbita AI Banner" width="100%" />
+  <img src=".github/Orbita AI (Overview).gif" alt="Orbita AI Banner" width="100%" />
   
   <br />
   
@@ -106,7 +106,7 @@ npm run dev     # Boot system
 
 <div align="center">
   <hr width="50%" />
-  <p>Engineered by <a href="https://ossamamehmood.com"><b>Ossama Mehmood</b></a></p>
+  <p>Built with ⚡ by <a href="https://ossamamehmood.com"><b>Ossama Mehmood</b></a></p>
   <p>
     <a href="https://ossamamehmood.com">Uplink</a> • 
     <a href="mailto:hello@ossamamehmood.com">Communication</a> • 
