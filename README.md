@@ -1,106 +1,115 @@
 # 🌌 Orbita AI
 
 <div align="center">
-  <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80&w=1200" alt="Orbita AI Banner" width="100%" />
+  <img src=".github/Orbita%20AI%20(Overview).gif" alt="Orbita AI Banner" width="100%" />
   
-  <h3>Defining the boundary of neural efficiency and digital synergy.</h3>
+  <br />
+  
+  <h1>Orbita AI: Neural Workspace</h1>
+  <h3><i>Defining the boundary of neural efficiency and digital synergy.</i></h3>
   
   <p>
-    <img src="https://img.shields.io/badge/Version-4.3.0-blue?style=for-the-badge&logo=rocket" alt="Version" />
-    <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License" />
-    <img src="https://img.shields.io/badge/Stack-React%20%2B%20Express-blueviolet?style=for-the-badge" alt="Stack" />
+    <img src="https://img.shields.io/badge/Version-4.3.0-blue?style=for-the-badge&logo=rocket&logoColor=white" alt="Version" />
+    <img src="https://img.shields.io/badge/Status-Active-emerald?style=for-the-badge" alt="Status" />
+    <img src="https://img.shields.io/badge/Security-Neural--AES--256-violet?style=for-the-badge" alt="Security" />
   </p>
 </div>
 
 ---
 
-## 📽️ System Overview
+## 📽️ Strategic Overview
 
-Orbita AI is a next-generation productivity ecosystem built for the modern era. It combines a high-fidelity, futuristic interface with powerful task management and AI-assisted workflows to create a seamless operational environment.
+Orbita AI is not just a dashboard; it's a mission-control center for your digital life. Designed with a philosophy of **Futuristic Minimalism**, it provides a hyper-fluid interface for high-stakes productivity.
 
-### 🎥 Demonstration
-<!-- Replace the link below with your actual video file path or hosted URL -->
+### 🎬 System Demonstration
 <div align="center">
-  <video src="./video.mp4" width="100%" controls>
+  <video src="video.mp4" width="100%" style="border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);" controls loop muted autoplay>
     Your browser does not support the video tag.
   </video>
-  <p><i>Experience the Neural Link in action.</i></p>
+  <p align="center"><i>Visualizing the core neural synchronization process.</i></p>
 </div>
 
 ---
 
-## ✨ Core Features
+## ⚡ Core Operational Capabilities
 
-<table width="100%">
+<table width="100%" border="0">
   <tr>
-    <td width="50%">
-      <h3>🧠 Neural Task Management</h3>
-      <p>A fluid, interactive system for tracking objectives and cycles with high-precision motion logic.</p>
+    <td width="50%" align="center">
+      <img src="https://img.icons8.com/wired/100/A855F7/brain.png" width="48" height="48" /><br/>
+      <b>Neural Link</b><br/>
+      Direct integration with Gemini models for real-time task decomposition and strategic forecasting.
     </td>
-    <td width="50%">
-      <h3>🔄 AI Neural Sync</h3>
-      <p>Integrated creative engine powered by Gemini for instant task decompositions and strategic insights.</p>
+    <td width="50%" align="center">
+      <img src="https://img.icons8.com/wired/100/A855F7/plasma-ball.png" width="48" height="48" /><br/>
+      <b>Kinetic Interface</b><br/>
+      Glassmorphic UI powered by hardware-accelerated motion logic and depth-perception shaders.
     </td>
   </tr>
   <tr>
-    <td width="50%">
-      <h3>🧬 Biometric Calibration</h3>
-      <p>Immersive onboarding process designed to align the system with your unique digital identity.</p>
+    <td width="50%" align="center">
+      <img src="https://img.icons8.com/wired/100/A855F7/security-lock.png" width="48" height="48" /><br/>
+      <b>Neural Encryption</b><br/>
+      Zero-knowledge local persistence with AES-256 simulation and biometric identity verification.
     </td>
-    <td width="50%">
-      <h3>🖥️ Futuristic UI/UX</h3>
-      <p>High-end glassmorphism aesthetic utilizing advanced CSS filters and hardware-accelerated animations.</p>
+    <td width="50%" align="center">
+      <img src="https://img.icons8.com/wired/100/A855F7/synapse.png" width="48" height="48" /><br/>
+      <b>Synergetic Workspaces</b><br/>
+      Dynamic sectoring of projects with hierarchical node structures and real-time telemetry.
     </td>
   </tr>
 </table>
 
 ---
 
-## 🛠️ Performance Stack
+## 🛠️ Technological Architecture
 
-| Layer | Component |
+> **"Built with precision, engineered for speed."**
+
+| Matrix | Component |
 | :--- | :--- |
-| **Frontend** | React 19, Vite, TypeScript |
-| **Styling** | Tailwind CSS 4.0, Motion (Framer), Radix UI |
-| **Core AI** | Google Gemini API (Neural Core) |
-| **Backend** | Node.js / Express |
-| **Icons** | Lucide React |
+| **Interface Core** | React 19 + TypeScript (Strict) |
+| **Build Engine** | Vite 6.0 (High-Speed Bundling) |
+| **Logic Layer** | Node.js / Express Neural Server |
+| **Visual Framework** | Tailwind CSS 4.0 + Motion (Framer) |
+| **Intelligence** | Gemini AI (Multimodal Integration) |
 
 ---
 
 ## 🚀 Deployment Protocol
 
-### 1. Initialize
+### 1. Synchronize Repository
 ```bash
 git clone https://github.com/ossamamehmood/orbita-ai.git
 cd orbita-ai
 ```
 
-### 2. Configuration
-Create a `.env` file in the root directory.
+### 2. Configure Neural Core
+Initialize your environment variables in a `.env` file:
 ```env
-GEMINI_API_KEY=your_neural_core_key
+GEMINI_API_KEY=your_neural_api_key_here
 ```
 
-### 3. Execution
+### 3. Initiate Uplink
 ```bash
-npm install
-npm run dev
+npm install     # Bridge dependencies
+npm run dev     # Boot system
 ```
 
 ---
 
-## 📄 Licensing & Security
+## 📄 Operational Directives
 
-Orbita AI is released under the **MIT License**. For information on reporting vulnerabilities or system audits, please refer to our [SECURITY.md](./SECURITY.md).
-
----
+- **License**: MIT Protocol (Authorized for global deployment)
+- **Security**: For vulnerability disclosure, refer to [SECURITY.md](./SECURITY.md)
+- **Support**: Check [LICENSE](./LICENSE) for contribution rights
 
 <div align="center">
-  <p>Built with ⚡ by <a href="https://ossamamehmood.com">Ossama Mehmood</a></p>
+  <hr width="50%" />
+  <p>Engineered by <a href="https://ossamamehmood.com"><b>Ossama Mehmood</b></a></p>
   <p>
-    <a href="https://ossamamehmood.com">Website</a> • 
-    <a href="mailto:hello@ossamamehmood.com">Email</a> • 
-    <a href="https://patreon.com/ossamamehmood">Support</a>
+    <a href="https://ossamamehmood.com">Uplink</a> • 
+    <a href="mailto:hello@ossamamehmood.com">Communication</a> • 
+    <a href="https://patreon.com/ossamamehmood">Sustain Core</a>
   </p>
 </div>
