@@ -307,6 +307,16 @@ body {
     0 0 45px rgba(245, 2, 253, 0.1);
 }
 
+.glow-gradient-sm {
+  box-shadow: 
+    0 0 8px rgba(2, 254, 220, 0.3),
+    0 0 16px rgba(90, 92, 255, 0.1);
+}
+
+.glow-blue-sm { box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
+.glow-orange-sm { box-shadow: 0 0 10px rgba(249, 115, 22, 0.3); }
+.glow-red-sm { box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
+
 .drop-shadow-gradient {
   filter: 
     drop-shadow(0 0 8px rgba(2, 254, 220, 0.4))

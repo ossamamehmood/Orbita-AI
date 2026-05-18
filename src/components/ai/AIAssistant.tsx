@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "motion/react";
 import { Send, X, Sparkles, Brain, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { aiService } from "@/services/aiService";
 import { useTasks } from "@/hooks/useTasks";
@@ -25,15 +24,16 @@ export default function AIAssistant() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (scrollRef.current) {
-        const viewport = scrollRef.current.querySelector('[data-radix-scroll-area-viewport]');
-        if (viewport) {
-           viewport.scrollTo({ top: viewport.scrollHeight, behavior: 'smooth' });
-        }
+    if (isOpen && scrollRef.current) {
+        scrollRef.current.scrollTo({
+            top: scrollRef.current.scrollHeight,
+            behavior: 'smooth'
+        });
     }
-  }, [messages, isTyping]);
+  }, [messages, isTyping, isOpen]);
 
   const handleSend = async () => {
     if (!input.trim() || isTyping) return;
@@ -64,7 +64,7 @@ export default function AIAssistant() {
             initial={{ opacity: 0, scale: 0.9, y: 20, filter: "blur(10px)" }}
             animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
             exit={{ opacity: 0, scale: 0.9, y: 20, filter: "blur(10px)" }}
-            className="w-[100vw] sm:w-[400px] max-w-[calc(100vw-32px)] sm:max-w-[90vw] pointer-events-auto h-[70vh] sm:h-[600px] flex flex-col glass-blue-glossy border-border shadow-2xl overflow-hidden"
+            className="w-[calc(100vw-32px)] sm:w-[420px] pointer-events-auto h-[65vh] sm:h-[650px] max-h-[calc(100dvh-120px)] flex flex-col glass-blue-glossy border-border shadow-2xl overflow-hidden"
           >
             {/* Header */}
             <div className="p-5 flex items-center justify-between border-b border-border bg-background/40 backdrop-blur-3xl">
@@ -91,7 +91,10 @@ export default function AIAssistant() {
             </div>
 
             {/* Chat Area */}
-            <ScrollArea className="flex-1 p-6" ref={scrollRef}>
+            <div 
+              className="flex-1 overflow-y-auto p-6 scroll-smooth scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10" 
+              ref={scrollRef}
+            >
               <div className="space-y-6">
                 {messages.map((msg, i) => (
                   <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -126,8 +129,9 @@ export default function AIAssistant() {
                     </div>
                   </div>
                 )}
+                <div ref={messagesEndRef} />
               </div>
-            </ScrollArea>
+            </div>
 
             {/* Input Area */}
             <div className="p-5 border-t border-border bg-background/40 backdrop-blur-3xl">

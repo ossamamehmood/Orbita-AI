@@ -1,6 +1,6 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { FolderPlus, Plus, MoreVertical, Trash2, Layout, Zap, X, AlertCircle } from "lucide-react";
+import { Folder, FolderPlus, Plus, MoreVertical, Trash2, Layout, Zap, X, AlertCircle } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useTasks } from "@/hooks/useTasks";
 import { Badge } from "@/components/ui/badge";
@@ -70,9 +70,9 @@ export default function WorkspacesView({
         </div>
         <Button 
           onClick={() => setIsCreating(true)}
-          className="h-10 px-6 rounded-full bg-primary text-primary-foreground hover:opacity-90 border-0 shadow-xl flex items-center gap-2 group w-full sm:w-auto justify-center"
+          className="h-10 px-6 rounded-full futuristic-gradient text-white glow-gradient hover:opacity-90 border-0 shadow-xl flex items-center gap-2 group w-full sm:w-auto justify-center"
         >
-          <Plus className="w-4 h-4 text-primary-foreground group-hover:rotate-90 transition-transform group-hover:svg-stroke-gradient" strokeWidth={2.5} />
+          <Plus className="w-4 h-4 text-white group-hover:rotate-90 transition-transform group-hover:svg-stroke-gradient" strokeWidth={2.5} />
           <span className="font-semibold text-sm">Initialize Sector</span>
         </Button>
       </div>
@@ -95,7 +95,7 @@ export default function WorkspacesView({
             />
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
-            <Button type="submit" className="flex-1 h-12 rounded-xl bg-primary text-primary-foreground font-bold">Deploy Sector</Button>
+            <Button type="submit" className="flex-1 h-12 rounded-xl futuristic-gradient text-white glow-gradient font-bold">Deploy Sector</Button>
             <Button type="button" variant="ghost" onClick={() => setIsCreating(false)} className="px-8 h-12 rounded-xl text-foreground/40 hover:bg-card/10 font-medium">Cancel</Button>
           </div>
         </motion.form>
@@ -116,8 +116,9 @@ export default function WorkspacesView({
               className="group relative p-8 rounded-3xl bg-card border border-border hover:border-primary/20 transition-all flex flex-col gap-6 cursor-pointer text-left overflow-hidden shadow-xl"
             >
               <div className="flex items-start justify-between">
-                <div className="w-12 h-12 rounded-xl bg-card flex items-center justify-center border border-border group-hover:border-primary/20 transition-all relative overflow-hidden backdrop-blur-3xl">
-                  <span className="relative z-10 text-xl font-display font-semibold uppercase text-foreground/60 group-hover:text-gradient transition-colors">
+                <div className="relative flex items-center justify-center w-12 h-12 group/folder">
+                  <Folder className="w-full h-full transition-all text-foreground/40 group-hover:svg-stroke-gradient group-hover:drop-shadow-gradient" />
+                  <span className="absolute top-[16px] font-black text-xs uppercase tracking-tighter flex items-center justify-center pointer-events-none text-foreground/60 group-hover:text-gradient transition-colors">
                     {ws.name.substring(0, 1)}
                   </span>
                 </div>
@@ -171,7 +172,7 @@ export default function WorkspacesView({
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
-                    className="h-full bg-primary rounded-full glow-gradient"
+                    className="h-full futuristic-gradient rounded-full glow-gradient"
                   />
                 </div>
               </div>

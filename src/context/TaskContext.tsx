@@ -43,6 +43,7 @@ interface TaskContextType {
   deleteTask: (taskId: string) => Promise<void>;
   expandTaskAI: (taskId: string) => Promise<void>;
   decomposeComplexInputAI: (input: string, workspaceId?: string) => Promise<void>;
+  getSystemSynthesis: () => Promise<{ briefing: string, topActions: string[], directive: string } | null>;
   clearNotifications: () => void;
   confirmAction: (options: ConfirmOptions) => void;
   isConfirmOpen: boolean;
@@ -333,6 +334,8 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
         description: data.summary,
         subtasks: [...(task.subtasks || []), ...newSubtasks],
         priority: data.priority.toLowerCase() as any,
+        complexity: data.complexity,
+        estimatedTime: data.estimatedTime,
         aiSummary: "Enriched by Orbita AI"
       });
       addNotification('AI Breakdown', `Task "${task.title}" expanded with ${data.subtasks.length} new sub-cycles.`, 'ai');
@@ -355,38 +358,64 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
       
       if (!response.ok) throw new Error("AI Assistant unreachable");
       
-      const { suggestedWorkspaceName, tasks: tasksToCreate } = await response.json();
+      const { suggestedWorkspaceName, strategicBrief, tasks: tasksToCreate } = await response.json();
       
       let targetWorkspaceId = workspaceId;
 
-      // Logic: If more than 3 tasks or if no workspace ID was provided, create a dedicated workspace
-      // This ensures large project inputs get their own creative folder
+      // Logic: If it's more than 3 tasks OR if no workspace ID was provided, create a dedicated workspace
+      // This ensures large project inputs get their own creative "Sector"
       if (tasksToCreate.length >= 4 || !targetWorkspaceId) {
         const newWS = await createWorkspace(suggestedWorkspaceName || "Neural Project Sector");
         targetWorkspaceId = newWS.id;
       }
       
-      for (const t of tasksToCreate) {
-        await createTask({
-          title: t.title,
-          description: t.description,
-          priority: t.priority.toLowerCase() as any,
-          workspaceId: targetWorkspaceId,
-          subtasks: t.subtasks.map((st: string) => ({
-            id: Math.random().toString(36).substring(2, 6),
-            title: st,
-            completed: false
-          }))
-        });
-      }
+      const newTasks: Task[] = tasksToCreate.map((t: any) => ({
+        id: Math.random().toString(36).substring(2, 9),
+        title: t.title,
+        description: t.description,
+        status: 'todo',
+        priority: t.priority.toLowerCase() as any,
+        complexity: t.complexity,
+        estimatedTime: t.estimatedTime,
+        progress: 0,
+        ownerId: 'local',
+        workspaceId: targetWorkspaceId!,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        isDeleted: false,
+        subtasks: t.subtasks.map((st: string) => ({
+          id: Math.random().toString(36).substring(2, 6),
+          title: st,
+          completed: false
+        })),
+        tags: t.tags || [],
+        stakeholders: t.stakeholders || [],
+        dependencies: t.dependencies || [],
+        aiSummary: strategicBrief || "Generated via Neural Decomposition"
+      }));
 
+      setTasks(prev => [...newTasks, ...prev]);
       addNotification('Neural Decomposition', `Decomposed input into ${tasksToCreate.length} tasks within "${suggestedWorkspaceName}".`, 'ai');
     }, {
       loading: 'Orbita AI orchestrating neural decomposition...',
       success: 'Neural mapping complete. Workspace synchronized.',
       error: 'Decomposition failed',
     });
-  }, [userProfile, createWorkspace, createTask, addNotification]);
+  }, [userProfile, createWorkspace, addNotification]);
+
+  const getSystemSynthesis = React.useCallback(async () => {
+    try {
+      const response = await fetch("/api/ai/synthesis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tasks, workspaces, userProfile }),
+      });
+      const data = await response.json();
+      return data;
+    } catch (e) {
+      return { error: "Orbita AI Offline", message: "Failed to initialize neural link." };
+    }
+  }, [tasks, workspaces, userProfile]);
 
   const contextValue = React.useMemo(() => ({ 
     tasks, 
@@ -405,6 +434,7 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
     deleteTask, 
     expandTaskAI,
     decomposeComplexInputAI,
+    getSystemSynthesis,
     clearNotifications,
     confirmAction,
     isConfirmOpen,

@@ -17,6 +17,10 @@ export interface Task {
   aiSummary?: string;
   status: Status;
   priority: Priority;
+  complexity?: number; // 1-5
+  estimatedTime?: string;
+  stakeholders?: string[];
+  dependencies?: string[]; // Task IDs or Titles
   dueDate?: string;
   progress: number;
   tags: string[];

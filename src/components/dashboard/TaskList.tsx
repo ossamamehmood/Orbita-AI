@@ -12,7 +12,9 @@ import {
   ChevronRight,
   GripVertical,
   Sparkles,
-  Trash2
+  Trash2,
+  Users,
+  ShieldAlert
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -66,9 +68,9 @@ const TaskCard = React.memo(function TaskCard({
 
   const priorityColors = {
     low: "bg-white/5 text-white/40 border-white/10",
-    medium: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-    high: "bg-orange-500/10 text-orange-500 border-orange-500/20",
-    critical: "bg-red-500/10 text-red-500 border-red-500/20",
+    medium: "bg-blue-500/10 text-blue-400 border-blue-500/20 glow-blue-sm",
+    high: "bg-orange-500/10 text-orange-500 border-orange-500/20 glow-orange-sm",
+    critical: "bg-red-500/10 text-red-500 border-red-500/20 glow-red-sm animate-pulse-subtle",
   };
 
   const toggleComplete = (e?: React.MouseEvent) => {
@@ -206,7 +208,7 @@ const TaskCard = React.memo(function TaskCard({
             </div>
           )}
 
-          <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-3 pt-2">
             {/* Due Date Editor */}
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/5 border border-border hover:border-primary/20 transition-all group/date">
               <Clock className="w-3 h-3 text-foreground/40" />
@@ -217,6 +219,40 @@ const TaskCard = React.memo(function TaskCard({
                 className="bg-transparent text-[10px] font-semibold text-foreground/40 group-hover/date:text-foreground uppercase tracking-wider border-none outline-none cursor-pointer dark-calendar-picker w-24"
               />
             </div>
+
+            {task.complexity && (
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/5 border border-border text-[10px] font-bold text-foreground/40 uppercase tracking-widest">
+                <GripVertical className="w-3 h-3 text-accent" />
+                <span>Level {task.complexity}</span>
+              </div>
+            )}
+
+            {task.estimatedTime && (
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/5 border border-border text-[10px] font-bold text-foreground/40 uppercase tracking-widest">
+                <Clock className="w-3 h-3 text-secondary" />
+                <span>{task.estimatedTime}</span>
+              </div>
+            )}
+
+            {task.tags && task.tags.length > 0 && task.tags.map(tag => (
+              <div key={tag} className="px-3 py-1.5 rounded-full bg-card/5 border border-border text-[9px] font-black uppercase tracking-widest text-foreground/40 hover:text-gradient transition-all cursor-default">
+                {tag}
+              </div>
+            ))}
+
+            {task.stakeholders && task.stakeholders.length > 0 && (
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/5 border border-primary/20">
+                <Users className="w-3 h-3 text-primary" />
+                <span className="text-[9px] font-black uppercase text-primary/80">{task.stakeholders.join(', ')}</span>
+              </div>
+            )}
+
+            {task.dependencies && task.dependencies.length > 0 && (
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/5 border border-orange-500/20">
+                <ShieldAlert className="w-3 h-3 text-orange-500" />
+                <span className="text-[9px] font-black uppercase text-orange-500/80">Depends on: {task.dependencies.join(', ')}</span>
+              </div>
+            )}
 
             {task.subtasks && task.subtasks.length > 0 && (
               <div className="flex items-center gap-1.5 text-[10px] font-medium text-foreground/30 uppercase tracking-tight px-2 py-1">

@@ -47,6 +47,7 @@ import AIAssistant from "@/components/ai/AIAssistant";
 import Analytics from "@/components/dashboard/Analytics";
 import SettingsSubpage from "@/components/pages/Settings";
 import WorkspacesView from "@/components/dashboard/WorkspacesView";
+import NeuralBriefing from "@/components/dashboard/NeuralBriefing";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 export default function Dashboard() {
@@ -148,22 +149,32 @@ export default function Dashboard() {
     await moveTaskToWorkspace(taskId, workspaceId);
   }, [moveTaskToWorkspace]);
 
-  const handleQuickAdd = React.useCallback((e?: React.FormEvent) => {
+  const handleQuickAdd = React.useCallback(async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!quickTaskTitle.trim()) return;
     
-    createTask({
-      title: quickTaskTitle.slice(0, 100) + (quickTaskTitle.length > 100 ? "..." : ""),
-      description: quickTaskTitle.length > 100 ? quickTaskTitle : "",
-      priority: 'medium',
-      status: 'todo',
-      dueDate: quickTaskDueDate || undefined,
-      workspaceId: activeWorkspace || workspaces[0]?.id || 'ws1'
-    });
+    const input = quickTaskTitle.trim();
+    
+    // Heuristic for complex input: > 200 chars or multiple lines (likely a transcript or brief)
+    const isComplex = input.length > 250 || input.split('\n').filter(l => l.trim()).length >= 4;
+
+    if (isComplex) {
+      await decomposeComplexInputAI(input, activeWorkspace || undefined);
+    } else {
+      createTask({
+        title: input.slice(0, 100) + (input.length > 100 ? "..." : ""),
+        description: input.length > 100 ? input : "",
+        priority: 'medium',
+        status: 'todo',
+        dueDate: quickTaskDueDate || undefined,
+        workspaceId: activeWorkspace || workspaces[0]?.id || 'ws1'
+      });
+    }
+    
     setQuickTaskTitle("");
     setQuickTaskDueDate("");
     setIsAddingTask(false);
-  }, [quickTaskTitle, quickTaskDueDate, activeWorkspace, workspaces, createTask]);
+  }, [quickTaskTitle, quickTaskDueDate, activeWorkspace, workspaces, createTask, decomposeComplexInputAI]);
 
   const triggerPurge = React.useCallback(() => {
     confirmAction({
@@ -540,7 +551,7 @@ export default function Dashboard() {
                            >
                               <div className="flex items-center justify-between">
                                 <p className="text-sm font-bold text-foreground group-hover:text-gradient transition-colors">{task.title}</p>
-                                <Badge className="text-[8px] bg-primary/10 text-primary border-primary/20">{workspaces.find(w => w.id === task.workspaceId)?.name}</Badge>
+                                <Badge className="text-[8px] futuristic-gradient text-white border-0 glow-gradient">{workspaces.find(w => w.id === task.workspaceId)?.name}</Badge>
                               </div>
                               <p className="text-xs text-foreground/30 mt-1 line-clamp-1">{task.description}</p>
                            </div>
@@ -565,7 +576,7 @@ export default function Dashboard() {
               >
                 <Bell className="w-4.5 h-4.5 text-foreground/60" />
                 {notifications.length > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 futuristic-gradient text-[8px] sm:text-[10px] flex items-center justify-center font-black text-white rounded-full border-2 border-background glow-gradient animate-bounce-subtle pointer-events-none">
+                  <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 futuristic-gradient text-[8px] sm:text-[10px] flex items-center justify-center font-black text-white rounded-full border-2 border-background glow-gradient pointer-events-none">
                     {notifications.length}
                   </span>
                 )}
@@ -577,7 +588,7 @@ export default function Dashboard() {
               >
                 <div className="flex items-center justify-between">
                   <h4 className="font-bold text-foreground">System Alerts</h4>
-                  <Badge className="bg-primary/10 text-primary border-0 text-[8px] uppercase tracking-widest px-2">{notifications.length} New</Badge>
+                  <Badge className="futuristic-gradient text-white border-0 text-[8px] uppercase tracking-widest px-2 glow-gradient">{notifications.length} New</Badge>
                 </div>
                 <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 scrollbar-none">
                   {notifications.length === 0 ? (
@@ -598,7 +609,7 @@ export default function Dashboard() {
                   <Button 
                     variant="ghost" 
                     onClick={(e) => { e.stopPropagation(); clearNotifications(); }}
-                    className="w-full h-10 rounded-xl text-[10px] font-bold uppercase tracking-widest text-foreground hover:bg-primary/5 transition-colors border border-primary/10 group"
+                    className="w-full h-10 rounded-xl text-[10px] font-bold uppercase tracking-widest text-foreground hover:bg-card transition-colors border border-primary/10 group"
                   >
                     <span className="group-hover:text-gradient transition-colors">Clear All Logs</span>
                   </Button>
@@ -703,10 +714,7 @@ export default function Dashboard() {
                     ))}
                   </div>
 
-                  {/* AI Suggestions Row Removed */}
-
-                    {/* Task Area */}
-                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 pt-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 pt-4">
                       <div className="lg:col-span-3 space-y-10">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                           <div className="space-y-2">
@@ -735,7 +743,7 @@ export default function Dashboard() {
                               </Button>
                             )}
                             <DropdownMenu>
-                              <DropdownMenuTrigger className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-[11px] font-black uppercase tracking-widest h-10 px-6 rounded-xl border border-border bg-card/5 hover:bg-primary/10 hover:text-gradient shadow-sm transition-all")}>
+                              <DropdownMenuTrigger className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-[11px] font-black uppercase tracking-widest h-10 px-6 rounded-xl border border-border bg-card/5 hover:bg-card hover:text-gradient shadow-sm transition-all")}>
                                 Sort By: {sortBy === 'priority' ? 'Priority' : sortBy === 'date' ? 'Date Created' : 'Status'}
                               </DropdownMenuTrigger>
                               <DropdownMenuContent className="glass-blue-glossy border-border text-foreground p-2 rounded-2xl shadow-2xl backdrop-blur-3xl min-w-[160px]">
@@ -769,6 +777,10 @@ export default function Dashboard() {
                           </div>
                         </section>
                       </div>
+                    </div>
+
+                    <div className="mt-2 text-foreground">
+                      <NeuralBriefing />
                     </div>
                 </div>
               )}
