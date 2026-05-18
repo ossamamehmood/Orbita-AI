@@ -64,26 +64,26 @@ export default function AIAssistant() {
             initial={{ opacity: 0, scale: 0.9, y: 20, filter: "blur(10px)" }}
             animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
             exit={{ opacity: 0, scale: 0.9, y: 20, filter: "blur(10px)" }}
-            className="w-[100vw] sm:w-[400px] max-w-[calc(100vw-32px)] sm:max-w-[90vw] pointer-events-auto h-[70vh] sm:h-[600px] flex flex-col glass-blue-glossy rounded-[2rem] sm:rounded-[3rem] border-white/20 shadow-2xl overflow-hidden"
+            className="w-[100vw] sm:w-[400px] max-w-[calc(100vw-32px)] sm:max-w-[90vw] pointer-events-auto h-[70vh] sm:h-[600px] flex flex-col glass-blue-glossy border-border shadow-2xl overflow-hidden"
           >
             {/* Header */}
-            <div className="p-5 flex items-center justify-between border-b border-white/5 bg-black/40 backdrop-blur-3xl">
+            <div className="p-5 flex items-center justify-between border-b border-border bg-background/40 backdrop-blur-3xl">
               <div className="flex items-center gap-3">
-                <div className="p-1 rounded-lg bg-white/5 border border-white/10 shadow-sm">
+                <div className="p-1 rounded-lg bg-card border border-border shadow-sm">
                   <OrbitaLogo className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white tracking-tight text-sm">Orbita Assistant</h4>
+                  <h4 className="font-semibold text-foreground tracking-tight text-sm">Orbita Assistant</h4>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <div className="w-1.5 h-1.5 rounded-full futuristic-gradient animate-pulse shadow-[0_0_10px_rgba(2,254,220,0.5)]" />
-                    <span className="text-[9px] text-white/30 uppercase font-bold tracking-wider">System Active</span>
+                    <span className="text-[9px] text-foreground/30 uppercase font-bold tracking-wider">System Active</span>
                   </div>
                 </div>
               </div>
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="w-8 h-8 rounded-full hover:bg-white/5 text-white/20 hover:text-white transition-all" 
+                className="w-8 h-8 rounded-full hover:bg-card/10 text-foreground/20 hover:text-foreground transition-all" 
                 onClick={() => setIsOpen(false)}
               >
                 <X className="w-4 h-4" />
@@ -99,10 +99,10 @@ export default function AIAssistant() {
                        <OrbitaLogo className="w-7 h-7 mr-3 mt-1 shrink-0 shadow-sm" />
                     )}
                     <div className={cn(
-                      "max-w-[85%] p-3.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap font-bold",
+                      "max-w-[85%] p-3.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap font-bold transition-colors duration-400",
                       msg.role === 'user' 
-                        ? 'bg-white text-black' 
-                        : 'bg-white/[0.05] border border-white/10 text-white/90'
+                        ? 'bg-primary text-primary-foreground shadow-md' 
+                        : 'bg-muted border border-border text-foreground'
                     )}>
                       {msg.content}
                     </div>
@@ -119,10 +119,10 @@ export default function AIAssistant() {
                 {isTyping && (
                   <div className="flex justify-start items-center gap-2">
                     <OrbitaLogo className="w-6 h-6 mr-3 mt-1 shrink-0" />
-                    <div className="bg-white/10 backdrop-blur-xl border border-white/10 p-4 rounded-2xl rounded-tl-sm flex gap-1.5">
-                      <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce shadow-[0_0_8px_rgba(255,255,255,0.5)]" />
-                      <div className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce [animation-delay:0.2s] shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
-                      <div className="w-1.5 h-1.5 bg-white/30 rounded-full animate-bounce [animation-delay:0.4s] shadow-[0_0_8px_rgba(255,255,255,0.2)]" />
+                    <div className="bg-card/10 backdrop-blur-xl border border-border p-4 rounded-2xl rounded-tl-sm flex gap-1.5 shadow-sm">
+                      <div className="w-1.5 h-1.5 bg-foreground rounded-full animate-bounce shadow-[0_0_8px_rgba(var(--foreground-rgb),0.5)]" />
+                      <div className="w-1.5 h-1.5 bg-foreground/60 rounded-full animate-bounce [animation-delay:0.2s] shadow-[0_0_8px_rgba(var(--foreground-rgb),0.3)]" />
+                      <div className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-bounce [animation-delay:0.4s] shadow-[0_0_8px_rgba(var(--foreground-rgb),0.2)]" />
                     </div>
                   </div>
                 )}
@@ -130,7 +130,7 @@ export default function AIAssistant() {
             </ScrollArea>
 
             {/* Input Area */}
-            <div className="p-5 border-t border-white/5 bg-black/40 backdrop-blur-3xl">
+            <div className="p-5 border-t border-border bg-background/40 backdrop-blur-3xl">
               <form 
                 onSubmit={(e) => { e.preventDefault(); handleSend(); }}
                 className="flex gap-2.5 items-center"
@@ -140,18 +140,18 @@ export default function AIAssistant() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Ask anything..." 
-                    className="bg-white/[0.03] border-white/5 rounded-full focus:border-white/10 focus:ring-0 h-10 pl-5 pr-10 text-sm text-white font-medium transition-all focus:bg-white/[0.06]"
+                    className="bg-card/5 border-border rounded-full focus:border-primary/50 focus:ring-0 h-10 pl-5 pr-10 text-sm text-foreground font-medium transition-all focus:bg-card/10"
                   />
-                  <div className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-white/60 transition-colors">
+                  <div className="absolute right-3.5 top-1/2 -translate-y-1/2 text-foreground/20 group-focus-within:text-foreground/60 transition-colors">
                      <Sparkles className="w-3.5 h-3.5" />
                   </div>
                 </div>
                 <Button 
                   type="submit" 
                   disabled={isTyping || !input.trim()} 
-                  className="w-10 h-10 rounded-full bg-white text-black hover:bg-white/90 border-0 shadow-lg p-0 flex items-center justify-center shrink-0 disabled:opacity-30 transition-all"
+                  className="w-10 h-10 rounded-full bg-primary text-primary-foreground hover:opacity-90 border-0 shadow-lg p-0 flex items-center justify-center shrink-0 disabled:opacity-30 transition-all font-bold"
                 >
-                  <Send className="w-4 h-4 fill-black" />
+                  <Send className="w-4 h-4 fill-primary-foreground" />
                 </Button>
               </form>
             </div>
@@ -163,16 +163,16 @@ export default function AIAssistant() {
         <Button 
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            "w-16 h-16 sm:w-20 sm:h-20 rounded-[2rem] p-0 bg-black/40 backdrop-blur-2xl border border-white/10 shadow-2xl shadow-primary/20 hover:scale-110 active:scale-95 transition-all relative group overflow-hidden pointer-events-auto",
-            isOpen && "border-white/40 bg-white/5"
+            "w-16 h-16 sm:w-20 sm:h-20 rounded-[2rem] p-0 bg-background/40 backdrop-blur-2xl border border-border shadow-2xl shadow-primary/20 hover:scale-110 active:scale-95 transition-all relative group overflow-hidden pointer-events-auto",
+            isOpen && "border-primary/40 bg-card/5"
           )}
         >
-          <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className={cn("w-full h-full p-4 relative z-10 transition-transform duration-500", isOpen && "rotate-90 scale-75")}>
              {isOpen ? (
-               <X className="w-full h-full text-white p-2" />
+               <X className="w-full h-full text-foreground p-2" />
              ) : (
-               <OrbitaLogo className="w-full h-full drop-shadow-[0_0_20px_rgba(2,254,220,0.4)]" />
+               <OrbitaLogo className="w-full h-full drop-shadow-[0_0_20px_rgba(var(--primary-rgb),0.4)]" />
              )}
           </div>
         </Button>

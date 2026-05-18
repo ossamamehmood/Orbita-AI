@@ -28,21 +28,29 @@ export default React.memo(function Analytics({ tasks }: { tasks: Task[] }) {
               <stop offset="100%" stopColor="#F502FD" stopOpacity={0}/>
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-foreground/5" />
           <XAxis 
             dataKey="name" 
             axisLine={false} 
             tickLine={false} 
-            tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }}
+            tick={{ fill: 'currentColor', fontSize: 10 }}
+            className="text-foreground/30"
           />
           <YAxis 
             axisLine={false} 
             tickLine={false} 
-            tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }}
+            tick={{ fill: 'currentColor', fontSize: 10 }}
+            className="text-foreground/30"
           />
           <Tooltip 
-            contentStyle={{ backgroundColor: 'rgba(0,0,0,0.8)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', backdropFilter: 'blur(10px)' }}
-            itemStyle={{ color: '#02FEDC', fontSize: '12px' }}
+            contentStyle={{ 
+              backgroundColor: 'var(--popover)', 
+              border: '1px solid var(--border)', 
+              borderRadius: '12px', 
+              backdropFilter: 'blur(10px)',
+              color: 'var(--popover-foreground)'
+            }}
+            itemStyle={{ color: '#02FEDC', fontSize: '12px', fontWeight: 'bold' }}
           />
           <Area 
             type="monotone" 

@@ -68,14 +68,14 @@ export default function Onboarding() {
                     transition={{ delay: 0.4 }}
                     className="text-6xl md:text-8xl font-display font-black tracking-tighter"
                   >
-                    <span className="text-white">Orbita</span>
+                    <span className="text-foreground">Orbita</span>
                     <span className="text-gradient"> AI</span>
                   </motion.h1>
                   <motion.p 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.6 }}
-                    className="text-white/40 text-xl font-medium leading-relaxed max-w-sm mx-auto"
+                    className="text-foreground/40 text-xl font-medium leading-relaxed max-w-sm mx-auto"
                   >
                     Defining the boundary of neural efficiency and digital synergy.
                   </motion.p>
@@ -89,7 +89,7 @@ export default function Onboarding() {
               >
                 <Button 
                   onClick={handleNext}
-                  className="w-full h-20 rounded-full glass-blue-glossy border-white/20 text-white font-bold text-xl group shadow-2xl relative overflow-hidden transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full h-20 rounded-full glass-blue-glossy border-border text-foreground font-bold text-xl group shadow-2xl relative overflow-hidden transition-all hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <div className="absolute inset-0 bg-linear-to-r from-primary/10 via-transparent to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   <span className="relative z-10 flex items-center gap-3">
@@ -97,7 +97,7 @@ export default function Onboarding() {
                     <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-500" />
                   </span>
                 </Button>
-                <p className="mt-6 text-[10px] font-black uppercase tracking-[0.5em] text-white/20">System Version 3.4.0</p>
+                <p className="mt-6 text-[10px] font-black uppercase tracking-[0.5em] text-foreground/20">System Version 3.4.0</p>
               </motion.div>
             </motion.div>
           )}
@@ -112,12 +112,12 @@ export default function Onboarding() {
               className="space-y-12"
             >
               <div className="space-y-4">
-                <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-white/40">
+                <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-foreground/40">
                   <Sparkles className="w-4 h-4 animate-pulse text-primary" />
                   Biometric Calibration
                 </div>
-                <h2 className="text-5xl font-display font-bold text-white tracking-tighter">Establish Identity</h2>
-                <p className="text-white/40 text-base font-medium">Your signature in the neural network.</p>
+                <h2 className="text-5xl font-display font-bold text-foreground tracking-tighter">Establish Identity</h2>
+                <p className="text-foreground/40 text-base font-medium">Your signature in the neural network.</p>
               </div>
 
               <div className="space-y-10">
@@ -127,13 +127,13 @@ export default function Onboarding() {
                       whileHover={{ scale: 1.05 }}
                       className="w-40 h-40 rounded-[3rem] glass-glossy border-white/10 relative cursor-pointer overflow-hidden transition-all group-hover:border-white/30 shadow-2xl p-1"
                     >
-                      <label className="cursor-pointer w-full h-full flex items-center justify-center bg-black/40 rounded-[2.8rem] overflow-hidden relative">
+                      <label className="cursor-pointer w-full h-full flex items-center justify-center bg-card-foreground/5 rounded-[2.8rem] overflow-hidden relative">
                         {photo ? (
                           <img src={photo} alt="Preview" className="w-full h-full object-cover" />
                         ) : (
                           <div className="flex flex-col items-center gap-2">
-                            <UserCircle className="w-16 h-16 text-white/5" />
-                            <span className="text-[8px] font-bold text-white/20 uppercase tracking-widest">No Data</span>
+                            <UserCircle className="w-16 h-16 text-foreground/5" />
+                            <span className="text-[8px] font-bold text-foreground/20 uppercase tracking-widest">No Data</span>
                           </div>
                         )}
                         

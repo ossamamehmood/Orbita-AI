@@ -10,28 +10,31 @@ import Onboarding from "@/components/layout/Onboarding";
 import { AnimatePresence, motion } from "motion/react";
 import Orb from "@/components/Orb";
 
+import { ThemeProvider, useTheme } from "@/lib/ThemeContext";
+
 function AppContent() {
   const { userProfile, loading } = useTaskContext();
+  const { theme } = useTheme();
 
   if (loading) {
     return (
-      <div className="h-screen w-full bg-black flex items-center justify-center">
+      <div className="h-screen w-full bg-background flex items-center justify-center">
         <div className="w-12 h-12 rounded-xl futuristic-gradient animate-spin shadow-2xl shadow-primary/20" />
       </div>
     );
   }
 
   return (
-    <div className="bg-black min-h-screen relative overflow-hidden">
+    <div className="bg-background min-h-screen relative overflow-hidden transition-colors duration-500">
       {userProfile.isFirstTime && (
-        <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-black flex items-center justify-center">
+        <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-background flex items-center justify-center">
           <div className="relative w-[1080px] h-[1080px]">
             <Orb
-              hue={324}
+              hue={theme === 'dark' ? 324 : 220}
               hoverIntensity={0.2}
               rotateOnHover
               forceHoverState={false}
-              backgroundColor="#000000"
+              backgroundColor={theme === 'dark' ? "#000000" : "#ffffff"}
             />
           </div>
         </div>
@@ -51,16 +54,19 @@ function AppContent() {
           </motion.div>
         )}
       </AnimatePresence>
-      <Toaster theme="dark" richColors position="top-right" />
+      <Toaster theme={theme} richColors position="top-right" />
     </div>
   );
 }
 
 export default function App() {
   return (
-    <TaskProvider>
-      <AppContent />
-    </TaskProvider>
+    <ThemeProvider>
+      <TaskProvider>
+        <AppContent />
+      </TaskProvider>
+    </ThemeProvider>
   );
 }
+
 

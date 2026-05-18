@@ -65,11 +65,35 @@
   --radius: 1.5rem;
 }
 
+.light {
+  --background: #ffffff;
+  --foreground: #020617;
+  
+  --primary: #5A5CFF;
+  --primary-foreground: #ffffff;
+  
+  --secondary: #02FEDC;
+  --secondary-foreground: #000000;
+  
+  --accent: #F502FD;
+  --accent-foreground: #ffffff;
+  
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+  
+  --card: #ffffff;
+  --card-foreground: #020617;
+  
+  --popover: #ffffff;
+  --popover-foreground: #020617;
+  
+  --border: #e2e8f0;
+  --input: #f1f5f9;
+  --ring: #5A5CFF;
+}
+
 body {
-  background-color: #000000;
-  background-image: 
-    radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.05) 0%, transparent 60%),
-    radial-gradient(circle at 0% 100%, rgba(255, 255, 255, 0.02) 0%, transparent 40%);
+  background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   min-height: 100vh;
@@ -77,6 +101,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-y: overlay;
   letter-spacing: -0.011em;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.dark body {
+  background-image: 
+    radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.05) 0%, transparent 60%),
+    radial-gradient(circle at 0% 100%, rgba(255, 255, 255, 0.02) 0%, transparent 40%);
+}
+
+.light body {
+  background-image: 
+    radial-gradient(circle at 50% -20%, rgba(90, 92, 255, 0.05) 0%, transparent 60%),
+    radial-gradient(circle at 0% 100%, rgba(2, 254, 220, 0.05) 0%, transparent 40%);
 }
 
 /* Custom Scrollbar */
@@ -95,8 +132,16 @@ body {
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.light ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+}
+
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.2);
+}
+
+.light ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .glass {
@@ -106,6 +151,15 @@ body {
   box-shadow: 
     0 4px 24px -1px rgba(0, 0, 0, 0.4), 
     inset 0 0 0 0.5px rgba(255, 255, 255, 0.04);
+  transition: background 0.4s ease, border 0.4s ease, box-shadow 0.4s ease;
+}
+
+.light .glass {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 
+    0 4px 24px -1px rgba(0, 0, 0, 0.05), 
+    inset 0 0 0 0.5px rgba(255, 255, 255, 1);
 }
 
 .glass-glossy {
@@ -115,6 +169,15 @@ body {
   box-shadow: 
     inset 0 0.5px 0px rgba(255, 255, 255, 0.2),
     0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s ease;
+}
+
+.light .glass-glossy {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 
+    inset 0 0.5px 0px rgba(255, 255, 255, 1),
+    0 10px 30px -10px rgba(0, 0, 0, 0.05);
 }
 
 .glass-dark {
@@ -122,6 +185,13 @@ body {
   backdrop-filter: blur(20px) saturate(120%);
   border: 1px solid rgba(255, 255, 255, 0.04);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  transition: all 0.4s ease;
+}
+
+.light .glass-dark {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 .glass-blue-glossy {
@@ -131,7 +201,17 @@ body {
   box-shadow: 
     inset 0 0.5px 0px rgba(255, 255, 255, 0.15),
     0 20px 40px -15px rgba(0, 0, 0, 0.6);
+  transition: all 0.4s ease;
 }
+
+.light .glass-blue-glossy {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 1) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 
+    inset 0 0.5px 0px rgba(255, 255, 255, 1),
+    0 20px 40px -10px rgba(0, 0, 0, 0.05);
+}
+
 
 .ios-glass {
   background: rgba(20, 20, 25, 0.6);
